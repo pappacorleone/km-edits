@@ -52,7 +52,6 @@
     <FollowMenuItem />
 {/if}
 
-
 {#if $currentPlayerAreaIdStore !== undefined || ($bottomActionBarVisibilityStore && !$inLivekitStore && $currentPlayerGroupLockStateStore !== undefined)}
     <LockDiscussionMenuItem />
 {/if}
