@@ -26,6 +26,7 @@ import { inExternalServiceStore, myCameraStore, myMicrophoneStore, proximityMeet
 import { userMovingStore } from "./GameStore";
 import { hideHelpCameraSettings } from "./HelpSettingsStore";
 import { isLiveStreamingStore } from "./IsStreamingStore";
+import { videoAvatarEnabledStore } from "./VideoAvatarStore";
 
 import { backgroundConfigStore, backgroundProcessingEnabledStore } from "./BackgroundTransformStore";
 
@@ -290,6 +291,7 @@ export const cameraEnergySavingStore = derived(
         devicesNotLoaded,
         isLiveStreamingStore,
         displayedMegaphoneScreenStore,
+        videoAvatarEnabledStore,
     ],
     ([
         $deviceChanged10SecondsAgoStore,
@@ -300,6 +302,7 @@ export const cameraEnergySavingStore = derived(
         $devicesNotLoaded,
         $isLiveStreamingStore,
         $displayedMegaphoneScreenStore,
+        $videoAvatarEnabledStore,
     ]) => {
         return (
             !$mouseInBottomRight &&
@@ -309,7 +312,8 @@ export const cameraEnergySavingStore = derived(
             !$cameraNoEnergySavingStore &&
             !$devicesNotLoaded &&
             !$isLiveStreamingStore &&
-            !$displayedMegaphoneScreenStore
+            !$displayedMegaphoneScreenStore &&
+            !$videoAvatarEnabledStore
         );
     }
 );
@@ -410,6 +414,7 @@ export const mediaStreamConstraintsStore = derived(
         availabilityStatusStore,
         batchGetUserMediaStore,
         inBackgroundSettingsStore,
+        videoAvatarEnabledStore,
     ],
     (
         [
@@ -426,6 +431,7 @@ export const mediaStreamConstraintsStore = derived(
             $availabilityStatusStore,
             $batchGetUserMediaStore,
             $inBackgroundSettingsStore,
+            $videoAvatarEnabled,
         ],
         set
     ) => {
@@ -440,8 +446,9 @@ export const mediaStreamConstraintsStore = derived(
         // Shared conditions for disabling media
         const isInExternalService = $inExternalServiceStore === true;
         const isEnergySaving = $cameraEnergySavingStore === true && $enableCameraSceneVisibilityStore === false;
+        // DENY_PROXIMITY_MEETING should not disable camera when video avatar is enabled
         const isUnavailableStatus =
-            $availabilityStatusStore === AvailabilityStatus.DENY_PROXIMITY_MEETING ||
+            ($availabilityStatusStore === AvailabilityStatus.DENY_PROXIMITY_MEETING && !$videoAvatarEnabled) ||
             $availabilityStatusStore === AvailabilityStatus.SILENT ||
             $availabilityStatusStore === AvailabilityStatus.DO_NOT_DISTURB ||
             $availabilityStatusStore === AvailabilityStatus.BACK_IN_A_MOMENT ||

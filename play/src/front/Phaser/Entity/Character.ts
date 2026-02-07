@@ -27,6 +27,7 @@ import { lazyLoadPlayerCharacterTextures } from "./PlayerTexturesLoadingManager"
 import { SpeechBubble } from "./SpeechBubble";
 import { SpeechDomElement } from "./SpeechDomElement";
 import { ThinkingCloud } from "./ThinkingCloud";
+import { VideoAvatar } from "./VideoAvatar";
 import Text = Phaser.GameObjects.Text;
 import Container = Phaser.GameObjects.Container;
 import Sprite = Phaser.GameObjects.Sprite;
@@ -71,6 +72,11 @@ export abstract class Character extends Container implements OutlineableInterfac
      * A deferred promise that resolves when the texture of the character is actually displayed.
      */
     private textureLoadedDeferred = new Deferred<void>();
+
+    // Video avatar support
+    private videoAvatar: VideoAvatar | null = null;
+    private videoAvatarMode = false;
+    private videoStreamUnsubscriber: Unsubscriber | undefined;
 
     constructor(
         scene: GameScene,
@@ -464,6 +470,12 @@ export abstract class Character extends Container implements OutlineableInterfac
         this.texturePromise?.cancel();
         this.list.forEach((objectContaining) => objectContaining.destroy());
         this.outlineColorStoreUnsubscribe?.();
+
+        // Clean up video avatar
+        this.videoStreamUnsubscriber?.();
+        this.videoAvatar?.destroy();
+        this.videoAvatar = null;
+
         this.destroyed = true;
         super.destroy();
     }
@@ -679,5 +691,85 @@ export abstract class Character extends Container implements OutlineableInterfac
         for (const [, text] of this.texts) {
             (text as SpeechDomElement).callback();
         }
+    }
+
+    // Video Avatar Methods
+
+    /**
+     * Enable video avatar mode with a stream store
+     * When the stream is active, hides sprite layers and shows video
+     * When the stream stops, shows sprite layers again
+     */
+    public enableVideoAvatar(streamStore: Readable<MediaStream | undefined>, flipX = true): void {
+        if (this.videoAvatar) {
+            // Already enabled, just update the stream subscription
+            this.videoStreamUnsubscriber?.();
+        } else {
+            this.videoAvatarMode = true;
+            // Create VideoAvatar with relative coordinates - it will be added to this container
+            this.videoAvatar = new VideoAvatar(this.scene, flipX);
+            // Add to Character container - positions automatically follow character
+            this.add(this.videoAvatar.getDOMElement());
+        }
+
+        // Subscribe to stream changes
+        this.videoStreamUnsubscriber = streamStore.subscribe((stream) => {
+            if (stream && stream.getVideoTracks().length > 0) {
+                this.videoAvatar?.setStream(stream);
+                this.setSpritesVisible(false);
+            } else {
+                this.videoAvatar?.setStream(undefined);
+                this.setSpritesVisible(true);
+            }
+        });
+    }
+
+    /**
+     * Disable video avatar mode and return to sprite rendering
+     */
+    public disableVideoAvatar(): void {
+        this.videoAvatarMode = false;
+        this.videoStreamUnsubscriber?.();
+        this.videoStreamUnsubscriber = undefined;
+
+        if (this.videoAvatar) {
+            // Remove from container and destroy
+            this.remove(this.videoAvatar.getDOMElement());
+            this.videoAvatar.destroy();
+            this.videoAvatar = null;
+        }
+
+        this.setSpritesVisible(true);
+    }
+
+    /**
+     * Set visibility of sprite layers (used when switching between sprite and video mode)
+     */
+    protected setSpritesVisible(visible: boolean): void {
+        for (const sprite of this.sprites.values()) {
+            sprite.setVisible(visible);
+        }
+    }
+
+    /**
+     * Check if video avatar mode is active
+     */
+    public isVideoAvatarMode(): boolean {
+        return this.videoAvatarMode;
+    }
+
+    /**
+     * Check if video avatar is currently showing (has active stream)
+     */
+    public isVideoAvatarVisible(): boolean {
+        return this.videoAvatar?.hasActiveStream() ?? false;
+    }
+
+    /**
+     * Update video avatar position and depth
+     * No-op: DOMElement in container follows character automatically
+     */
+    protected updateVideoAvatarPosition(): void {
+        // Position updates are handled automatically by the container
     }
 }

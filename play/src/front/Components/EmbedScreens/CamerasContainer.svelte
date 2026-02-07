@@ -52,6 +52,7 @@
     import { oneLineStreamableCollectionStore } from "../../Stores/OneLineStreamableCollectionStore";
     import type { ObservableElement } from "../../Interfaces/ObservableElement";
     import ResizeHandle from "./ResizeHandle.svelte";
+    import { videoAvatarEnabledStore } from "../../Stores/VideoAvatarStore";
 
     setContext("inCameraContainer", true);
 
@@ -390,8 +391,8 @@
         {#each $oneLineStreamableCollectionStore as videoBox (videoBox.uniqueId)}
             <VideoBox {videoBox} {isOnOneLine} {oneLineMode} {videoWidth} {videoHeight} {intersectionObserver} />
         {/each}
-        <!-- in PictureInPicture, let's finish with our video feedback in small -->
-        {#if isOnOneLine && oneLineMode === "vertical" && !($myCameraStreamable?.displayInPictureInPictureMode ?? false)}
+        <!-- in PictureInPicture, let's finish with our video feedback in small (hidden when video avatar active) -->
+        {#if isOnOneLine && oneLineMode === "vertical" && !$videoAvatarEnabledStore && !($myCameraStreamable?.displayInPictureInPictureMode ?? false)}
             <div class="fixed bottom-20 right-0 z-50">
                 <div
                     data-unique-id="my-camera"

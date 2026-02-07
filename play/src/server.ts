@@ -48,9 +48,11 @@ if (SENTRY_DSN != undefined) {
 }
 
 (async () => {
+    console.log("[DEBUG] Starting server initialization...");
     await app.init();
+    console.log("[DEBUG] App initialized, starting listeners...");
 
-    await Promise.race([
+    await Promise.all([
         app
             .listenWebServer(PUSHER_HTTP_PORT)
             .then(() => console.info(`WorkAdventure Pusher web-server started on port ${PUSHER_HTTP_PORT}!`)),

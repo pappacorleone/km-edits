@@ -1,5 +1,5 @@
-import type { Unsubscriber } from "svelte/store";
-import { get } from "svelte/store";
+import type { Unsubscriber, Readable } from "svelte/store";
+import { get, derived } from "svelte/store";
 import type CancelablePromise from "cancelable-promise";
 import { PositionMessage_Direction } from "@workadventure/messages";
 import type { GameScene } from "../Game/GameScene";
@@ -12,6 +12,8 @@ import { followStateStore, followRoleStore, followUsersStore } from "../../Store
 import { WOKA_SPEED } from "../../Enum/EnvironmentVariable";
 import { visibilityStore } from "../../Stores/VisibilityStore";
 import { passStatusToOnline } from "../../Rules/StatusRules/statusChangerFunctions";
+import { localStreamStore } from "../../Stores/MediaStore";
+import { videoAvatarEnabledStore } from "../../Stores/VideoAvatarStore";
 
 export const hasMovedEventName = "hasMoved";
 export const requestEmoteEventName = "requestEmote";
@@ -45,6 +47,43 @@ export class Player extends Character {
                 this.finishFollowingPath(true);
             }
         });
+
+        // Enable video avatar for local player
+        // Create a derived store that extracts video-only stream (no audio to prevent feedback)
+        // Only provides stream when video avatar feature is enabled
+        // Caches the MediaStream reference to prevent flickering from recreating streams
+        let cachedVideoStream: MediaStream | undefined;
+        let cachedTrackIds: string[] = [];
+
+        const localVideoStreamStore: Readable<MediaStream | undefined> = derived(
+            [localStreamStore, videoAvatarEnabledStore],
+            ([$localStream, $videoAvatarEnabled]) => {
+                // Return undefined if video avatar feature is disabled
+                if (!$videoAvatarEnabled) {
+                    cachedVideoStream = undefined;
+                    cachedTrackIds = [];
+                    return undefined;
+                }
+                if ($localStream.type === "success" && $localStream.stream) {
+                    const videoTracks = $localStream.stream.getVideoTracks();
+                    if (videoTracks.length > 0) {
+                        // Only recreate stream if tracks actually changed
+                        const newTrackIds = videoTracks.map((t) => t.id);
+                        if (JSON.stringify(newTrackIds) !== JSON.stringify(cachedTrackIds)) {
+                            cachedVideoStream = new MediaStream(videoTracks);
+                            cachedTrackIds = newTrackIds;
+                        }
+                        return cachedVideoStream;
+                    }
+                }
+                cachedVideoStream = undefined;
+                cachedTrackIds = [];
+                return undefined;
+            }
+        );
+
+        // Enable video avatar with mirrored view for local player
+        this.enableVideoAvatar(localVideoStreamStore, true);
 
         /*this.unsubscribeLayoutManagerActionStore = layoutManagerActionStore.subscribe((actions) => {
             this.destroyAllText();

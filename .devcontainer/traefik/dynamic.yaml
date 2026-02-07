@@ -1,0 +1,54 @@
+http:
+  routers:
+    play:
+      rule: "HostRegexp(`^.+$`)"
+      priority: 1
+      service: play
+      entryPoints:
+        - web
+    play-ws:
+      rule: "HostRegexp(`^.+$`) && PathPrefix(`/ws/`)"
+      priority: 2
+      service: play-ws
+      entryPoints:
+        - web
+    front:
+      rule: "Host(`front.workadventure.localhost`)"
+      priority: 10
+      service: front
+      entryPoints:
+        - web
+    map-storage:
+      rule: "Host(`map-storage.workadventure.localhost`)"
+      priority: 10
+      service: map-storage
+      entryPoints:
+        - web
+    back:
+      rule: "Host(`api.workadventure.localhost`)"
+      priority: 10
+      service: back
+      entryPoints:
+        - web
+
+  services:
+    play:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:3002"
+    play-ws:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:3003"
+    front:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8080"
+    map-storage:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:3000"
+    back:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8082"

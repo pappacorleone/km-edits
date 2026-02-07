@@ -32,6 +32,7 @@ import { windowSize } from "./CoWebsiteStore";
 import { muteMediaStreamStore } from "./MuteMediaStreamStore";
 import { isLiveStreamingStore } from "./IsStreamingStore";
 import { createDelayedUnsubscribeStore } from "./Utils/createDelayedUnsubscribeStore";
+import { videoAvatarEnabledStore } from "./VideoAvatarStore";
 
 export interface LivekitStreamable {
     type: "livekit";
@@ -174,6 +175,7 @@ function createStreamableCollectionStore(): Readable<Map<string, VideoBox>> {
             isLiveStreamingStore,
             isListenerStore,
             listenerSharingCameraStore,
+            videoAvatarEnabledStore,
         ],
         (
             [
@@ -190,6 +192,7 @@ function createStreamableCollectionStore(): Readable<Map<string, VideoBox>> {
                 $isLiveStreamingStore,
                 $isListenerStore,
                 $listenerSharingCameraStore,
+                $videoAvatarEnabled,
             ] /*, set*/
         ) => {
             const peers = new Map<string, VideoBox>();
@@ -213,6 +216,11 @@ function createStreamableCollectionStore(): Readable<Map<string, VideoBox>> {
 
                 // Listeners can only show their camera if they have consented to share it (seeAttendees feature)
                 if ($isListenerStore && !$listenerSharingCameraStore) {
+                    shouldAddMyCamera = false;
+                }
+
+                // When video avatar is enabled, the circular avatar on the map replaces the large overlay
+                if ($videoAvatarEnabled) {
                     shouldAddMyCamera = false;
                 }
 

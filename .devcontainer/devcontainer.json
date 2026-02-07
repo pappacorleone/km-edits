@@ -1,0 +1,58 @@
+{
+  "name": "WorkAdventure Dev",
+  "image": "node:20-bookworm",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false,
+      "configureZshAsDefaultShell": false,
+      "username": "node",
+      "userUid": "automatic",
+      "userGid": "automatic"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "dockerDashComposeVersion": "v2"
+    },
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude,target=/home/node/.claude,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude.json,target=/home/node/.claude.json,type=bind,consistency=cached"
+  ],
+
+  "forwardPorts": [80, 3000, 3001, 6379, 8080, 8081, 50051, 50053],
+
+  "portsAttributes": {
+    "80": { "label": "Traefik Web", "onAutoForward": "notify" },
+    "3000": { "label": "Play HTTP", "onAutoForward": "silent" },
+    "3001": { "label": "Play WebSocket", "onAutoForward": "silent" },
+    "6379": { "label": "Redis", "onAutoForward": "silent" },
+    "8080": { "label": "Vite Frontend", "onAutoForward": "notify" },
+    "50051": { "label": "gRPC Back", "onAutoForward": "silent" },
+    "50053": { "label": "gRPC Map-Storage", "onAutoForward": "silent" }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  "containerEnv": {
+    "NODE_OPTIONS": "--max-old-space-size=8192"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "svelte.svelte-vscode",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+
+  "remoteUser": "node"
+}

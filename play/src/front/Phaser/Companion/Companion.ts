@@ -32,13 +32,14 @@ export class Companion extends Container {
     private texturePromise: CancelablePromise<string | void> | undefined;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texturePromise: CancelablePromise<string>) {
-        super(scene, x + 14, y + 4);
+        super(scene, x + 47, y + 12);
 
         this.sprites = new Map<string, Sprite>();
 
         this.delta = 0;
         this.invisible = true;
-        this.target = { x, y, direction: PositionMessage_Direction.DOWN };
+        // Initial target matches spawn position so the companion starts idle at its offset
+        this.target = { x: x + 47, y: y + 12, direction: PositionMessage_Direction.DOWN };
 
         this.direction = PositionMessage_Direction.DOWN;
         this.animationType = PlayerAnimationTypes.Idle;
@@ -89,7 +90,7 @@ export class Companion extends Container {
 
         const distance = Math.pow(xDist, 2) + Math.pow(yDist, 2);
 
-        if (distance < 650) {
+        if (distance < 4050) {
             this.animationType = PlayerAnimationTypes.Idle;
             this.direction = this.target.direction;
 

@@ -56,6 +56,7 @@ const screenShareQualityKey = "screenShareQuality";
 const bandwidthConstrainedScreenSharePreferenceKey = "bandwidthConstrainedScreenSharePreference";
 const legacyVideoBandwidthKey = "videoBandwidth";
 const legacyScreenShareBandwidthKey = "screenShareBandwidth";
+const videoAvatarEnabledKey = "videoAvatarEnabled";
 
 const INITIAL_MAP_EDITOR_SIDEBAR_WIDTH = 448;
 
@@ -133,6 +134,18 @@ class LocalUserStore {
 
     setRequestedMicrophoneState(value: boolean): void {
         localStorage.setItem(requestedMicrophoneStateKey, JSON.stringify(value));
+    }
+
+    getVideoAvatarEnabled(): boolean | null {
+        const value = localStorage.getItem(videoAvatarEnabledKey);
+        if (value === null) {
+            return null; // Return null if not set, so caller can use default
+        }
+        return JSON.parse(value);
+    }
+
+    setVideoAvatarEnabled(value: boolean): void {
+        localStorage.setItem(videoAvatarEnabledKey, JSON.stringify(value));
     }
 
     setCharacterTextures(textureIds: string[]): void {

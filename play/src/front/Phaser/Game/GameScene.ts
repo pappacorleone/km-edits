@@ -63,6 +63,7 @@ import { localUserStore } from "../../Connection/LocalUserStore";
 import { HtmlUtils } from "../../WebRtc/HtmlUtils";
 import { Loader } from "../Components/Loader";
 import { RemotePlayer } from "../Entity/RemotePlayer";
+import { VideoAvatarManager } from "../Entity/VideoAvatarManager";
 import { SelectCharacterScene, SelectCharacterSceneName } from "../Login/SelectCharacterScene";
 import { hasMovedEventName, Player, requestEmoteEventName } from "../Player/Player";
 import { ErrorSceneName } from "../Reconnecting/ErrorScene";
@@ -353,6 +354,7 @@ export class GameScene extends DirtyScene {
     private playersEventDispatcher = new IframeEventDispatcher();
     private playersMovementEventDispatcher = new IframeEventDispatcher();
     private remotePlayersRepository = new RemotePlayersRepository();
+    private videoAvatarManager: VideoAvatarManager | undefined;
     private throttledSendViewportToServer_!: throttle<() => void>;
     private playersDebugLogAlreadyDisplayed = false;
     private hideTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -785,6 +787,10 @@ export class GameScene extends DirtyScene {
         this.createCurrentPlayer();
         this.removeAllRemotePlayers(); //cleanup the list  of remote players in case the scene was rebooted
 
+        // Initialize video avatar manager for remote players
+        this.videoAvatarManager = new VideoAvatarManager(this);
+        this.videoAvatarManager.start();
+
         this.tryMovePlayerWithMoveToParameter();
 
         this.cameraManager = new CameraManager(
@@ -1156,6 +1162,7 @@ export class GameScene extends DirtyScene {
         megaphoneSpaceStore.set(undefined);
         this.proximitySpaceManager?.destroy();
         this._proximityChatRoom?.destroy();
+        this.videoAvatarManager?.destroy();
         this.mapEditorModeStoreUnsubscriber?.();
         this.emoteUnsubscriber?.();
         this.followUsersColorStoreUnsubscriber?.();
@@ -3693,6 +3700,9 @@ ${escapedMessage}
         }
         this.MapPlayersByKey.set(player.userId, player);
         player.updatePosition(addPlayerData.position);
+
+        // Link remote player to their video stream for video avatar display
+        this.videoAvatarManager?.linkRemotePlayerToVideo(player);
 
         player.on(Phaser.Input.Events.POINTER_OVER, () => {
             this.activatablesManager.handlePointerOverActivatableObject(player);

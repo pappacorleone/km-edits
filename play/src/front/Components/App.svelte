@@ -171,7 +171,7 @@
             physics: {
                 default: "arcade",
                 arcade: {
-                    debug: DEBUG_MODE,
+                    debug: false,
                 },
             },
             // Instruct systems with 2 GPU to choose the low power one. We don't need that extra power and we want to save battery
