@@ -1,5 +1,10 @@
 #!/bin/bash
 
+BACKGROUND=false
+if [ "$1" = "--background" ]; then
+    BACKGROUND=true
+fi
+
 # Navigate to workspace root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR/.."
@@ -127,7 +132,9 @@ echo ""
 echo "$BACK_PID" > /tmp/workadventure-logs/back.pid
 echo "$PLAY_PID" > /tmp/workadventure-logs/play.pid
 
-# Keep script running and show combined logs
-echo "Streaming logs (Ctrl+C to stop viewing, services keep running)..."
-echo ""
-tail -f /tmp/workadventure-logs/back.log /tmp/workadventure-logs/play.log 2>/dev/null || wait
+# Keep script running and show combined logs (unless running in background)
+if [ "$BACKGROUND" = false ]; then
+    echo "Streaming logs (Ctrl+C to stop viewing, services keep running)..."
+    echo ""
+    tail -f /tmp/workadventure-logs/back.log /tmp/workadventure-logs/play.log 2>/dev/null || wait
+fi

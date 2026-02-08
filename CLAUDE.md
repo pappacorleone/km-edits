@@ -55,7 +55,7 @@ docker-compose -f docker-compose.yaml -f docker-compose.no-synapse.yaml up # Dis
 ```
 
 ### DevContainer Setup
-The repo includes `.devcontainer/` config (node:20-bookworm with docker-in-docker). The `setup.sh` postCreateCommand handles hosts file, .env, Docker infrastructure, messages build, and npm install. Use `.devcontainer/start-dev.sh` to start services after setup — it launches infrastructure via `docker-compose.infra.yaml` (Redis, Traefik, Maps, OIDC), then starts back and play natively. Logs go to `/tmp/workadventure-logs/`.
+The repo includes `.devcontainer/` config (node:20-bookworm with docker-in-docker). On first creation, `setup.sh` runs automatically (`postCreateCommand`) to configure hosts file, .env, Docker infrastructure, messages build, and npm install. On every container start, `start-dev.sh` runs automatically (`postStartCommand`) to launch infrastructure via `docker-compose.infra.yaml` (Redis, Traefik, Maps, OIDC) and start back and play natively. Logs go to `/tmp/workadventure-logs/`. You can also run `start-dev.sh` manually for interactive log streaming.
 
 ### Manual Build
 **Critical**: Messages must be built first — they generate TypeScript from .proto files.
