@@ -14,8 +14,10 @@ services:
       - --providers.docker
       - --entryPoints.web.address=:80
       - --providers.docker.exposedbydefault=false
+      - --providers.file.filename=/etc/traefik/dynamic.yaml
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/dynamic.yaml:/etc/traefik/dynamic.yaml:ro
     networks:
       default:
         aliases:
@@ -74,6 +76,24 @@ services:
         { "AllowRememberLogin": false }
       LOGOUT_OPTIONS_INLINE: |
         { "AutomaticRedirectAfterSignOut": true }
+      API_SCOPES_INLINE: |
+        - Name: tags
+          UserClaims:
+            - tags-scope
+      API_RESOURCES_INLINE: |
+        - Name: some-app
+          Scopes:
+            - some-app-scope-1
+            - tags-scope
+          UserClaims:
+            - tags
+      IDENTITY_RESOURCES_INLINE: |
+        [
+          {
+            "Name": "tags-scope",
+            "ClaimTypes": ["tags"]
+          }
+        ]
       USERS_CONFIGURATION_INLINE: |
         [
           {

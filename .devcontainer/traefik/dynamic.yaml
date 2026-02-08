@@ -12,6 +12,43 @@ http:
       service: play-ws
       entryPoints:
         - web
+    # Route Vite dev assets directly to Vite server (bypasses pusher redirect)
+    play-vite-src:
+      rule: "HostRegexp(`^.+$`) && PathPrefix(`/src/`)"
+      priority: 3
+      service: front
+      entryPoints:
+        - web
+    play-vite-nodemodules:
+      rule: "HostRegexp(`^.+$`) && PathPrefix(`/node_modules/`)"
+      priority: 3
+      service: front
+      entryPoints:
+        - web
+    play-vite-fs:
+      rule: "HostRegexp(`^.+$`) && PathPrefix(`/@fs/`)"
+      priority: 3
+      service: front
+      entryPoints:
+        - web
+    play-vite-client:
+      rule: "HostRegexp(`^.+$`) && PathPrefix(`/@vite/`)"
+      priority: 3
+      service: front
+      entryPoints:
+        - web
+    play-vite-id:
+      rule: "HostRegexp(`^.+$`) && PathPrefix(`/@id/`)"
+      priority: 3
+      service: front
+      entryPoints:
+        - web
+    play-vite-hmr:
+      rule: "HostRegexp(`^.+$`) && PathPrefix(`/__vite_hmr`)"
+      priority: 3
+      service: front
+      entryPoints:
+        - web
     front:
       rule: "Host(`front.workadventure.localhost`)"
       priority: 10
@@ -35,11 +72,11 @@ http:
     play:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:3002"
+          - url: "http://host.docker.internal:3000"
     play-ws:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:3003"
+          - url: "http://host.docker.internal:3001"
     front:
       loadBalancer:
         servers:

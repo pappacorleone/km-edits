@@ -42,6 +42,8 @@ export PUSHER_URL=http://play.workadventure.localhost
 export PUBLIC_MAP_STORAGE_URL=http://map-storage.workadventure.localhost
 export INTERNAL_MAP_STORAGE_URL=http://localhost:3000
 export ALLOWED_CORS_ORIGIN=http://play.workadventure.localhost
+export UPLOADER_URL=http://uploader.workadventure.localhost
+export ICON_URL=http://icon.workadventure.localhost
 
 # Auth/Security
 export SECRET_KEY=yourSecretKey2020
