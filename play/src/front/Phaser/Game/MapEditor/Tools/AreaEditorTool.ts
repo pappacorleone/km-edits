@@ -22,6 +22,7 @@ import { SpeechDomElement } from "../../../Entity/SpeechDomElement";
 import { LL } from "../../../../../i18n/i18n-svelte";
 import { MapEditorTool } from "./MapEditorTool";
 import type { TrashEditorTool } from "./TrashEditorTool";
+import { mapEditorUndoToastStore } from "../../../../Stores/MapEditorUndoToastStore";
 
 export class AreaEditorTool extends MapEditorTool {
     private scene: GameScene;
@@ -198,6 +199,7 @@ export class AreaEditorTool extends MapEditorTool {
             }
         }
         this.mapEditorModeManager.executeCommand(deleteAreaCommand).catch((error) => console.error(error));
+        mapEditorUndoToastStore.set({ message: get(LL).mapEditor.undoToast.areaDeleted() });
     }
 
     private getIsPersonalArea(areaId: string): boolean {
@@ -638,6 +640,7 @@ export class AreaEditorTool extends MapEditorTool {
             this.removeAreaEntities(areaId);
         }
         this.mapEditorModeManager.executeCommand(deleteAreaCommand).catch((error) => console.error(error));
+        mapEditorUndoToastStore.set({ message: get(LL).mapEditor.undoToast.areaDeleted() });
     }
 
     private executeUpdateAreaFrontCommand(

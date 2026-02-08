@@ -15,6 +15,10 @@
     import ConfigureMyRoom from "./WAMSettingsEditor.svelte";
     import MapEditorResizeHandle from "./MapEditorResizeHandle.svelte";
     import { mapEditorSideBarWidthStore } from "./MapEditorSideBarWidthStore";
+    import EditorStatusBar from "./EditorStatusBar.svelte";
+    import KeyboardShortcutOverlay from "./KeyboardShortcutOverlay.svelte";
+    import { mapEditorShortcutOverlayStore } from "../../Stores/MapEditorShortcutOverlayStore";
+    import UndoToast from "./UndoToast.svelte";
 
     const direction = document.documentElement.getAttribute("dir") || "ltr";
 
@@ -51,6 +55,9 @@
 {#if $mapEditorSelectedToolStore === EditorToolName.WAMSettingsEditor}
     <ConfigureMyRoom />
 {/if}
+{#if $mapEditorShortcutOverlayStore}
+    <KeyboardShortcutOverlay />
+{/if}
 <div
     id="map-editor-container"
     class="z-[500] flex flex-row items-start justify-end gap-4 absolute h-full max-w-full md:max-w-[calc(100%-18px)] top-0 end-0 pointer-events-none"
@@ -68,6 +75,7 @@
         bind:this={mapEditor}
         class={`map-editor relative h-dvh max-w-full md:max-w-[calc(100%-64px)] pointer-events-auto ${$mapEditorSelectedToolStore}`}
     >
+        <UndoToast />
         {#if $mapEditorVisibilityStore && $mapEditorSelectedToolStore !== EditorToolName.WAMSettingsEditor}
             <div class="absolute h-dvh -start-0.5 top-0 flex flex-col z-[2000]">
                 <MapEditorResizeHandle
@@ -78,46 +86,49 @@
                 />
             </div>
             <div
-                class="sidebar h-dvh bg-contrast/80 backdrop-blur-md p-2 md:p-4"
+                class="sidebar h-dvh bg-contrast/80 backdrop-blur-md p-2 md:p-4 flex flex-col"
                 in:fly={{ x: 100, duration: 200, delay: 200 }}
                 out:fly={{ x: 100, duration: 200 }}
             >
-                <div class="flex flex-row justify-end w-full md:w-fit md:absolute md:top-4 md:right-2">
-                    <button
-                        class="h-8 w-8 rounded flex items-center justify-center hover:bg-white/20 transition-all aspect-square cursor-pointer text-2xl opacity-50 hover:opacity-100"
-                        class:right-4={direction === "ltr"}
-                        class:left-4={direction === "rtl"}
-                        on:click={hideMapEditor}
-                    >
-                        <ArrowBarRight
-                            height="h-5"
-                            width="w-5"
-                            strokeColor="stroke-white"
-                            fillColor="fill-transparent"
-                            classList={`aspect-ratio transition-all ${direction === "rtl" ? "rotate-180" : ""}`}
+                <div class="flex flex-col gap-4 flex-1 overflow-auto">
+                    <div class="flex flex-row justify-end w-full md:w-fit md:absolute md:top-4 md:right-2">
+                        <button
+                            class="h-8 w-8 rounded flex items-center justify-center hover:bg-white/20 transition-all aspect-square cursor-pointer text-2xl opacity-50 hover:opacity-100"
+                            class:right-4={direction === "ltr"}
+                            class:left-4={direction === "rtl"}
+                            on:click={hideMapEditor}
+                        >
+                            <ArrowBarRight
+                                height="h-5"
+                                width="w-5"
+                                strokeColor="stroke-white"
+                                fillColor="fill-transparent"
+                                classList={`aspect-ratio transition-all ${direction === "rtl" ? "rotate-180" : ""}`}
+                            />
+                        </button>
+                        <ButtonClose
+                            extraButtonClasses="backdrop-blur-0 backdrop-filter-none opacity-50 hover:opacity-100"
+                            bgColor="bg-transparent"
+                            size="sm"
+                            dataTestId="closeVisitCardButton"
+                            on:click={closeMapEditor}
                         />
-                    </button>
-                    <ButtonClose
-                        extraButtonClasses="backdrop-blur-0 backdrop-filter-none opacity-50 hover:opacity-100"
-                        bgColor="bg-transparent"
-                        size="sm"
-                        dataTestId="closeVisitCardButton"
-                        on:click={closeMapEditor}
-                    />
-                </div>
+                    </div>
 
-                {#if $mapEditorSelectedToolStore === EditorToolName.TrashEditor}
-                    <TrashEditor />
-                {/if}
-                {#if $mapEditorSelectedToolStore === EditorToolName.EntityEditor}
-                    <EntityEditor />
-                {/if}
-                {#if $mapEditorSelectedToolStore === EditorToolName.AreaEditor}
-                    <AreaEditor />
-                {/if}
-                {#if $mapEditorSelectedToolStore === EditorToolName.ExploreTheRoom}
-                    <Explorer />
-                {/if}
+                    {#if $mapEditorSelectedToolStore === EditorToolName.TrashEditor}
+                        <TrashEditor />
+                    {/if}
+                    {#if $mapEditorSelectedToolStore === EditorToolName.EntityEditor}
+                        <EntityEditor />
+                    {/if}
+                    {#if $mapEditorSelectedToolStore === EditorToolName.AreaEditor}
+                        <AreaEditor />
+                    {/if}
+                    {#if $mapEditorSelectedToolStore === EditorToolName.ExploreTheRoom}
+                        <Explorer />
+                    {/if}
+                </div>
+                <EditorStatusBar />
             </div>
         {/if}
     </div>

@@ -50,6 +50,7 @@ const foldersOpened = "foldersOpened";
 const cameraContainerHeightKey = "cameraContainerHeight";
 const chatSideBarWidthKey = "chatSideBarWidth";
 const mapEditorSideBarWidthKey = "mapEditorSideBarWidthKey";
+const mapEditorRecentEntitiesKey = "mapEditorRecentEntitiesKey";
 const bubbleSound = "bubbleSound";
 const videoQualityKey = "videoQuality";
 const screenShareQualityKey = "screenShareQuality";
@@ -817,6 +818,23 @@ class LocalUserStore {
         }
         const floatValue = parseFloat(value);
         return isNaN(floatValue) ? INITIAL_MAP_EDITOR_SIDEBAR_WIDTH : floatValue;
+    }
+
+    setMapEditorRecentEntities(entityIds: string[]): void {
+        localStorage.setItem(mapEditorRecentEntitiesKey, JSON.stringify(entityIds));
+    }
+
+    getMapEditorRecentEntities(): string[] {
+        const value = localStorage.getItem(mapEditorRecentEntitiesKey);
+        if (!value) {
+            return [];
+        }
+        try {
+            const parsed = JSON.parse(value);
+            return Array.isArray(parsed) ? parsed.filter((id) => typeof id === "string") : [];
+        } catch {
+            return [];
+        }
     }
 
     setBubbleSound(value: "ding" | "wobble"): void {

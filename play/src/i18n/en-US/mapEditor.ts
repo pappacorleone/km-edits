@@ -20,7 +20,49 @@ const mapEditor: BaseTranslation = {
         trashEditorActivated: "Trash editor activated",
         configureMyRoomActivated: "Configure my room activated",
     },
+    statusBar: {
+        undo: "Undo",
+        redo: "Redo",
+        saved: "Saved",
+        saving: "Saving...",
+        unsavedChanges: "Unsaved changes",
+    },
+    shortcutOverlay: {
+        title: "Keyboard shortcuts",
+        closeHint: "Press ? again to close",
+        sections: {
+            tools: "Tools",
+            editing: "Editing",
+            canvas: "Canvas",
+        },
+        items: {
+            explore: "Explore the room",
+            areaEditor: "Area editor",
+            entityEditor: "Entity editor",
+            wamSettings: "Configure my room",
+            trash: "Trash",
+            closeEditor: "Close map editor",
+            undo: "Undo last action",
+            redo: "Redo last action",
+            delete: "Delete selected",
+            copyDrag: "Copy while dragging",
+            snapGrid: "Snap to grid",
+            zoom: "Zoom in/out",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Object deleted.",
+        areaDeleted: "Area deleted.",
+        undo: "Undo",
+    },
     properties: {
+        categories: {
+            communication: "Communication",
+            contentMedia: "Content & Media",
+            navigation: "Navigation",
+            behavior: "Behavior",
+            extensions: "Extensions",
+        },
         silent: {
             label: "Silent",
             description: "Do not allow for conversations inside.",
@@ -348,9 +390,15 @@ const mapEditor: BaseTranslation = {
         itemPicker: {
             searchPlaceholder: "Search",
             backToSelectObject: "Back to select object",
+            recent: "Recent",
         },
         trashTool: {
             delete: "Click on the object to delete it!",
+            shortcutHint: "Tip: press Delete or Backspace to remove selection.",
+        },
+        hints: {
+            placeObject: "Select an object, then click on the map to place it.",
+            snapToGrid: "Hold Shift to snap to grid.",
         },
         deleteButton: "Delete",
         testInteractionButton: "Test Interaction",

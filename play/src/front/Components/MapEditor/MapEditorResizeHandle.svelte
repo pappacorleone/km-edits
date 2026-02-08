@@ -5,6 +5,7 @@
     export let maxWidth: number;
     export let currentWidth: number;
     export let onResize: (width: number) => void;
+    const defaultWidth = 350;
 
     let dragHandle: HTMLElement;
 
@@ -43,9 +44,14 @@
         document.removeEventListener("touchend", stopDragging);
     }
 
+    function resetWidth() {
+        onResize(Math.min(Math.max(defaultWidth, minWidth), maxWidth));
+    }
+
     onMount(() => {
         dragHandle.addEventListener("mousedown", startDragging, { passive: true });
         dragHandle.addEventListener("touchstart", startDragging, { passive: true });
+        dragHandle.addEventListener("dblclick", resetWidth);
     });
 
     onDestroy(() => {
@@ -56,17 +62,37 @@
 
         dragHandle.removeEventListener("mousedown", startDragging);
         dragHandle.removeEventListener("touchstart", startDragging);
+        dragHandle.removeEventListener("dblclick", resetWidth);
     });
 </script>
 
 <div
     bind:this={dragHandle}
     class="relative drag-handle my-auto mr-3 w-1 h-20 outline outline-4 outline-contrast bg-white cursor-col-resize transition-colors rounded-lg select-none"
-/>
+>
+    <div class="grip" />
+</div>
 
 <style>
     .drag-handle {
         pointer-events: auto;
+    }
+
+    .grip {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 18px;
+        transform: translate(-50%, -50%);
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.25),
+            rgba(0, 0, 0, 0.25) 2px,
+            transparent 2px,
+            transparent 4px
+        );
+        border-radius: 2px;
     }
 
     /* We make the drag handle bigger than it really is to make it more easily selectable (especially on mobile) */

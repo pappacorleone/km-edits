@@ -10,6 +10,7 @@
         mapEditorDeleteCustomEntityEventStore,
         mapEditorEntityModeStore,
         mapEditorModifyCustomEntityEventStore,
+        mapEditorRecentEntitiesStore,
         mapEditorSelectedEntityPrefabStore,
         mapEditorSelectedEntityStore,
         selectCategoryStore,
@@ -33,6 +34,7 @@
     let selectedColor: string;
 
     let searchTerm = "";
+    let recentEntitiesPrefabsVariants: EntityVariant[] = [];
 
     const mapEditorSelectedEntityPrefabStoreUnsubscriber = mapEditorSelectedEntityPrefabStore.subscribe(
         (prefab?: EntityPrefab) => {
@@ -66,12 +68,14 @@
 
     function onPickItem(entityPrefab: EntityPrefab) {
         mapEditorSelectedEntityPrefabStore.set(entityPrefab);
+        mapEditorRecentEntitiesStore.add(entityPrefab.id);
     }
 
     function onPickEntityVariant(entityVariant: EntityVariant) {
         pickedEntity = entityVariant.defaultPrefab;
         pickedEntityVariant = entityVariant;
         onColorChange(pickedEntity.color);
+        mapEditorRecentEntitiesStore.add(entityVariant.defaultPrefab.id);
     }
 
     function onColorChange(color: string) {
@@ -159,6 +163,15 @@
         );
     }
 
+    $: if ($entitiesPrefabsVariants) {
+        const variantsById = new Map(
+            $entitiesPrefabsVariants.map((variant) => [variant.defaultPrefab.id, variant])
+        );
+        recentEntitiesPrefabsVariants = $mapEditorRecentEntitiesStore
+            .map((id) => variantsById.get(id))
+            .filter((variant): variant is EntityVariant => variant !== undefined);
+    }
+
     onDestroy(() => {
         mapEditorSelectedEntityPrefabStoreUnsubscriber();
         entitiesPrefabsVariantStoreUnsubscriber();
@@ -196,9 +209,25 @@
             <!--                placeholder={$LL.mapEditor.entityEditor.itemPicker.searchPlaceholder()}-->
             <!--            />-->
         </div>
+        <div class="text-sm opacity-60">
+            {$LL.mapEditor.entityEditor.hints.placeObject()}
+            <span class="ml-2">{$LL.mapEditor.entityEditor.hints.snapToGrid()}</span>
+        </div>
     </div>
     <div class="flex-1 overflow-auto">
         {#if $selectCategoryStore === undefined && searchTerm === ""}
+            {#if recentEntitiesPrefabsVariants.length > 0}
+                <div class="mb-2">
+                    <span class="font-bold text-lg">
+                        {$LL.mapEditor.entityEditor.itemPicker.recent()}
+                    </span>
+                    <EntitiesGrid
+                        entityPrefabVariants={recentEntitiesPrefabsVariants}
+                        onSelectEntity={onPickEntityVariant}
+                        currentSelectedEntityId={pickedEntity?.id}
+                    />
+                </div>
+            {/if}
             <ul class="list-none !p-0 min-w-full">
                 {#each Object.entries(getEntitiesPrefabsVariantsGroupedByTagWithCustomFirst($entitiesPrefabsVariants)) as [tag, entitiesPrefabsVariants] (tag)}
                     <TagListItem

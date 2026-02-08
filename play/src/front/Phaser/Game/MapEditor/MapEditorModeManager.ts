@@ -14,6 +14,9 @@ import {
     mapEditorModeStore,
     mapEditorSelectedToolStore,
 } from "../../../Stores/MapEditorStore";
+import { mapEditorCanRedoStore, mapEditorCanUndoStore } from "../../../Stores/MapEditorUndoRedoStore";
+import { mapEditorSaveStatusStore } from "../../../Stores/MapEditorSaveStatusStore";
+import { mapEditorShortcutOverlayStore } from "../../../Stores/MapEditorShortcutOverlayStore";
 import { mapEditorActivated, mapEditorActivatedForThematics } from "../../../Stores/MenuStore";
 import { localUserStore } from "../../../Connection/LocalUserStore";
 import LL from "../../../../i18n/i18n-svelte";
@@ -136,6 +139,7 @@ export class MapEditorModeManager {
             const delay = 0;
             try {
                 await command.execute();
+                mapEditorSaveStatusStore.set("unsaved");
                 this.emitMapEditorUpdate(command, delay);
 
                 if (!(command instanceof UpdateWAMSettingCommand)) {
@@ -147,6 +151,7 @@ export class MapEditorModeManager {
                     logger("adding command to pendingList : ", command);
                     this.localCommandsHistory.push(command);
                     this.currentCommandIndex += 1;
+                    this.updateUndoRedoStores();
                 }
 
                 this.scene.getGameMap().updateLastCommandIdProperty(command.commandId);
@@ -192,9 +197,11 @@ export class MapEditorModeManager {
             // this should not be called with every change. Use some sort of debounce
             this.emitMapEditorUpdate(undoCommand);
             this.currentCommandIndex -= 1;
+            this.updateUndoRedoStores();
         } catch (e) {
             this.localCommandsHistory.splice(this.currentCommandIndex, 1);
             this.currentCommandIndex -= 1;
+            this.updateUndoRedoStores();
             console.error(e);
             Sentry.captureException(e);
         }
@@ -219,9 +226,11 @@ export class MapEditorModeManager {
             // this should not be called with every change. Use some sort of debounce
             this.emitMapEditorUpdate(command);
             this.currentCommandIndex += 1;
+            this.updateUndoRedoStores();
         } catch (e) {
             this.localCommandsHistory.splice(this.currentCommandIndex, 1);
             this.currentCommandIndex -= 1;
+            this.updateUndoRedoStores();
             console.error(e);
             Sentry.captureException(e);
         }
@@ -318,6 +327,11 @@ export class MapEditorModeManager {
                 }
                 break;
             }
+            case "?": {
+                if (!mapEditorModeActivated) break;
+                mapEditorShortcutOverlayStore.update((open) => !open);
+                break;
+            }
             default: {
                 return false;
                 break;
@@ -354,6 +368,9 @@ export class MapEditorModeManager {
                     if (this.pendingCommands[0].commandId === editMapCommandMessage.id) {
                         logger("removing command of pendingList : ", editMapCommandMessage.id);
                         const command = this.pendingCommands.shift();
+                        if (this.pendingCommands.length === 0) {
+                            mapEditorSaveStatusStore.set("saved");
+                        }
 
                         const message = editMapCommandMessage.editMapMessage?.message;
 
@@ -400,8 +417,14 @@ export class MapEditorModeManager {
                     }
                 }
             }
+            this.updateUndoRedoStores();
         })();
         return this.isReverting;
+    }
+
+    private updateUndoRedoStores(): void {
+        mapEditorCanUndoStore.set(this.currentCommandIndex >= 0);
+        mapEditorCanRedoStore.set(this.currentCommandIndex < this.localCommandsHistory.length - 1);
     }
 
     public equipTool(tool?: EditorToolName): void {
@@ -422,6 +445,7 @@ export class MapEditorModeManager {
             if (this.scene.connection === undefined) {
                 throw new Error("No connection attached to room to emit map editor update");
             }
+            mapEditorSaveStatusStore.set("saving");
             command.emitEvent(this.scene.connection);
         };
         if (delay === 0) {

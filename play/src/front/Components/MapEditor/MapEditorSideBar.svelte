@@ -12,24 +12,31 @@
     import { isMediaBreakpointUp } from "../../Utils/BreakpointsUtils";
     import { IconX, IconTexture, IconLamp, IconMapSearch, IconSettings, IconTrash } from "@wa-icons";
 
-    const availableTools: { toolName: EditorToolName; iconComponent: ComponentType; tooltiptext: LocalizedString }[] =
-        [];
+    const availableTools: {
+        toolName: EditorToolName;
+        iconComponent: ComponentType;
+        tooltiptext: LocalizedString;
+        shortcut?: string;
+    }[] = [];
 
     availableTools.push({
         toolName: EditorToolName.ExploreTheRoom,
         iconComponent: IconMapSearch,
         tooltiptext: $LL.mapEditor.sideBar.exploreTheRoom(),
+        shortcut: "1",
     });
 
     const entityEditorTool = {
         toolName: EditorToolName.EntityEditor,
         iconComponent: IconLamp,
         tooltiptext: $LL.mapEditor.sideBar.entityEditor(),
+        shortcut: "3",
     };
     const trashEditorTool = {
         toolName: EditorToolName.TrashEditor,
         iconComponent: IconTrash,
         tooltiptext: $LL.mapEditor.sideBar.trashEditor(),
+        shortcut: "5",
     };
 
     $: if ($mapEditorActivatedForThematics && !$mapEditorActivated) {
@@ -42,12 +49,14 @@
             toolName: EditorToolName.AreaEditor,
             iconComponent: IconTexture,
             tooltiptext: $LL.mapEditor.sideBar.areaEditor(),
+            shortcut: "2",
         });
         availableTools.push(entityEditorTool);
         availableTools.push({
             toolName: EditorToolName.WAMSettingsEditor,
             iconComponent: IconSettings,
             tooltiptext: $LL.mapEditor.sideBar.configureMyRoom(),
+            shortcut: "4",
         });
         availableTools.push(trashEditorTool);
     }
@@ -113,6 +122,9 @@
                         class=" bg-contrast/90 backdrop-blur-xl text-white tooltip absolute text-nowrap p-2 invisible opacity-0 transition-all peer-hover:visible peer-hover:opacity-100 rounded top-1/2 -translate-y-1/2 right-[130%]"
                     >
                         {tool.tooltiptext}
+                        {#if tool.shortcut}
+                            <span class="ml-2 opacity-60">{tool.shortcut}</span>
+                        {/if}
                     </div>
                 </div>
             {/each}

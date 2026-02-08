@@ -20,6 +20,7 @@
     import InputSwitch from "../../Input/InputSwitch.svelte";
     import OpenFilePropertyEditor from "../PropertyEditor/OpenFilePropertyEditor.svelte";
     import type { Entity } from "../../../Phaser/ECS/Entity";
+    import CollapsibleSection from "../PropertyEditor/CollapsibleSection.svelte";
 
     let properties: EntityDataProperties = [];
     let entityName = "";
@@ -273,7 +274,7 @@
 {#if $mapEditorSelectedEntityStore === undefined}
     {$LL.mapEditor.entityEditor.editInstructions()}
 {:else}
-    <div class="overflow-x-hidden overflow-y-auto">
+    <div class="overflow-x-hidden overflow-y-auto space-y-3">
         <div class="header-container">
             <h3>{$LL.mapEditor.entityEditor.editing({ name: $mapEditorSelectedEntityStore.getPrefab().name })}</h3>
         </div>
@@ -283,102 +284,102 @@
             <IconArrowLeft font-size="12" class="cursor-pointer" />
             <span class="ml-1 cursor-pointer">{$LL.mapEditor.entityEditor.itemPicker.backToSelectObject()}</span>
         </p>
-        <div class="properties-buttons flex flex-row m-2">
-            <AddPropertyButtonWrapper
-                property="playAudio"
-                on:click={() => {
-                    onAddProperty("playAudio");
-                }}
-            />
-        </div>
-        <div class="properties-buttons flex flex-row flex-wrap m-2">
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                on:click={() => {
-                    onAddProperty("openWebsite");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openFile"
-                on:click={() => {
-                    onAddProperty("openFile");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="klaxoon"
-                on:click={() => {
-                    onAddProperty("openWebsite", "klaxoon");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="youtube"
-                on:click={() => {
-                    onAddProperty("openWebsite", "youtube");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="googleDrive"
-                on:click={() => {
-                    onAddProperty("openWebsite", "googleDrive");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="googleDocs"
-                on:click={() => {
-                    onAddProperty("openWebsite", "googleDocs");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="googleSheets"
-                on:click={() => {
-                    onAddProperty("openWebsite", "googleSheets");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="googleSlides"
-                on:click={() => {
-                    onAddProperty("openWebsite", "googleSlides");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="eraser"
-                on:click={() => {
-                    onAddProperty("openWebsite", "eraser");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="excalidraw"
-                on:click={() => {
-                    onAddProperty("openWebsite", "excalidraw");
-                }}
-            />
-            <AddPropertyButtonWrapper
-                property="openWebsite"
-                subProperty="tldraw"
-                on:click={() => {
-                    onAddProperty("openWebsite", "tldraw");
-                }}
-            />
-        </div>
-        <div class="properties-buttons flex flex-row flex-wrap m-2">
-            {#each connectionManager.applications as app, index (`my-own-app-${index}`)}
+        <CollapsibleSection title={$LL.mapEditor.properties.categories.contentMedia()} defaultOpen={true}>
+            <div class="properties-buttons flex flex-row flex-wrap m-2">
                 <AddPropertyButtonWrapper
-                    property="openWebsite"
-                    subProperty={app.name}
+                    property="playAudio"
                     on:click={() => {
-                        onAddSpecificProperty(app);
+                        onAddProperty("playAudio");
                     }}
                 />
-            {/each}
-        </div>
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    on:click={() => {
+                        onAddProperty("openWebsite");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openFile"
+                    on:click={() => {
+                        onAddProperty("openFile");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="klaxoon"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "klaxoon");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="youtube"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "youtube");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="googleDrive"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "googleDrive");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="googleDocs"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "googleDocs");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="googleSheets"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "googleSheets");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="googleSlides"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "googleSlides");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="eraser"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "eraser");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="excalidraw"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "excalidraw");
+                    }}
+                />
+                <AddPropertyButtonWrapper
+                    property="openWebsite"
+                    subProperty="tldraw"
+                    on:click={() => {
+                        onAddProperty("openWebsite", "tldraw");
+                    }}
+                />
+            </div>
+            <div class="properties-buttons flex flex-row flex-wrap m-2">
+                {#each connectionManager.applications as app, index (`my-own-app-${index}`)}
+                    <AddPropertyButtonWrapper
+                        property="openWebsite"
+                        subProperty={app.name}
+                        on:click={() => {
+                            onAddSpecificProperty(app);
+                        }}
+                    />
+                {/each}
+            </div>
+        </CollapsibleSection>
         <div class="entity-name-container">
             <Input
                 id="objectName"

@@ -20,6 +20,8 @@ import type { GameMapFrontWrapper } from "../../GameMap/GameMapFrontWrapper";
 import { TexturesHelper } from "../../../Helpers/TexturesHelper";
 import type { Entity } from "../../../ECS/Entity";
 import { MapEditorTool } from "./MapEditorTool";
+import LL from "../../../../i18n/i18n-svelte";
+import { mapEditorUndoToastStore } from "../../../Stores/MapEditorUndoToastStore";
 
 export abstract class EntityRelatedEditorTool extends MapEditorTool {
     private handleDeleteEntity: (entity: Entity) => void;
@@ -216,5 +218,6 @@ export abstract class EntityRelatedEditorTool extends MapEditorTool {
                 new DeleteEntityFrontCommand(this.scene.getGameMap(), entity.entityId, undefined, this.entitiesManager)
             )
             .catch((e) => console.error(e));
+        mapEditorUndoToastStore.set({ message: get(LL).mapEditor.undoToast.entityDeleted() });
     }
 }

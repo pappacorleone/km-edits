@@ -47,6 +47,7 @@
     import { ON_ACTION_TRIGGER_ENTER } from "../../../WebRtc/LayoutManager";
     import HighlightPropertyEditor from "../PropertyEditor/HighlightPropertyEditor.svelte";
     import { gameManager } from "../../../Phaser/Game/GameManager";
+    import CollapsibleSection from "../PropertyEditor/CollapsibleSection.svelte";
 
     let properties: AreaDataProperties = [];
     let areaName = "";
@@ -530,7 +531,8 @@
     {$LL.mapEditor.areaEditor.editInstructions()}
 {:else}
     <div class="overflow-x-hidden space-y-3">
-        <div class="properties-buttons flex flex-row flex-wrap">
+        <CollapsibleSection title={$LL.mapEditor.properties.categories.behavior()} defaultOpen={true}>
+            <div class="properties-buttons flex flex-row flex-wrap">
             {#if !hasPersonalAreaProperty && !hasRightsProperty && ADMIN_URL}
                 <AddPropertyButtonWrapper
                     property="personalAreaPropertyData"
@@ -543,8 +545,6 @@
                     on:click={() => onAddProperty("restrictedRightsPropertyData")}
                 />
             {/if}
-        </div>
-        <div class="properties-buttons flex flex-row flex-wrap">
             {#if !hasSilentProperty}
                 <AddPropertyButtonWrapper
                     property="silent"
@@ -553,6 +553,55 @@
                     }}
                 />
             {/if}
+            {#if !hasHighlightProperty}
+                <AddPropertyButtonWrapper
+                    property="highlight"
+                    on:click={() => {
+                        onAddProperty("highlight");
+                    }}
+                />
+            {/if}
+            {#if !hasTooltipPropertyData}
+                <AddPropertyButtonWrapper
+                    property="tooltipPropertyData"
+                    on:click={() => {
+                        onAddProperty("tooltipPropertyData");
+                    }}
+                />
+            {/if}
+            </div>
+        </CollapsibleSection>
+
+        <CollapsibleSection title={$LL.mapEditor.properties.categories.navigation()}>
+            <div class="properties-buttons flex flex-row flex-wrap">
+                {#if !hasStartProperty}
+                    <AddPropertyButtonWrapper
+                        property="start"
+                        on:click={() => {
+                            onAddProperty("start");
+                        }}
+                    />
+                {/if}
+                {#if !hasExitProperty}
+                    <AddPropertyButtonWrapper
+                        property="exit"
+                        on:click={() => {
+                            onAddProperty("exit");
+                        }}
+                    />
+                {/if}
+                {#if !hasFocusableProperty}
+                    <AddPropertyButtonWrapper
+                        property="focusable"
+                        on:click={() => {
+                            onAddProperty("focusable");
+                        }}
+                    />
+                {/if}
+            </div>
+        </CollapsibleSection>
+        <CollapsibleSection title={$LL.mapEditor.properties.categories.communication()}>
+            <div class="properties-buttons flex flex-row flex-wrap">
             {#if !hasLivekitRoomProperty}
                 <AddPropertyButtonWrapper
                     property="livekitRoomProperty"
@@ -582,31 +631,6 @@
                     />
                 {/if}
             {/if}
-            {#if !hasStartProperty}
-                <AddPropertyButtonWrapper
-                    property="start"
-                    on:click={() => {
-                        onAddProperty("start");
-                    }}
-                />
-            {/if}
-            {#if !hasExitProperty}
-                <AddPropertyButtonWrapper
-                    property="exit"
-                    on:click={() => {
-                        onAddProperty("exit");
-                    }}
-                />
-            {/if}
-            {#if !hasplayAudioProperty}
-                <AddPropertyButtonWrapper
-                    property="playAudio"
-                    on:click={() => {
-                        onAddProperty("playAudio");
-                    }}
-                />
-            {/if}
-
             {#if !hasMatrixRoom && MATRIX_PUBLIC_URI}
                 <AddPropertyButtonWrapper
                     property="matrixRoomPropertyData"
@@ -632,58 +656,46 @@
                     }}
                 />
             {/if}
-            {#if !hasFocusableProperty}
+            {#if !hasJitsiRoomProperty}
                 <AddPropertyButtonWrapper
-                    property="focusable"
+                    property="jitsiRoomProperty"
                     on:click={() => {
-                        onAddProperty("focusable");
+                        onAddProperty("jitsiRoomProperty");
                     }}
+                    disabled={hasLivekitRoomProperty || hasSpeakerMegaphoneProperty || hasListenerMegaphoneProperty}
                 />
             {/if}
-            {#if !hasHighlightProperty}
-                <AddPropertyButtonWrapper
-                    property="highlight"
-                    on:click={() => {
-                        onAddProperty("highlight");
-                    }}
-                />
-            {/if}
-            {#if !hasTooltipPropertyData}
-                <AddPropertyButtonWrapper
-                    property="tooltipPropertyData"
-                    on:click={() => {
-                        onAddProperty("tooltipPropertyData");
-                    }}
-                />
-            {/if}
-        </div>
-        {#if extensionModulesAreaMapEditor.length > 0 || !hasJitsiRoomProperty}
-            <div class="properties-buttons flex flex-row flex-wrap mt-2">
-                {#each extensionModulesAreaMapEditor as extensionModuleAreaMapEditor, index (`extensionModulesAreaMapEditor-${index}`)}
-                    {#each Object.entries(extensionModuleAreaMapEditor) as [subtype, areaProperty] (`extensionModuleAreaMapEditor-${subtype}`)}
-                        {#if areaProperty.shouldDisplayButton(properties)}
-                            <AddPropertyButtonWrapper
-                                property="extensionModule"
-                                subProperty={subtype}
-                                on:click={() => {
-                                    onAddProperty("extensionModule", subtype);
-                                }}
-                            />
-                        {/if}
+            </div>
+        </CollapsibleSection>
+        {#if extensionModulesAreaMapEditor.length > 0}
+            <CollapsibleSection title={$LL.mapEditor.properties.categories.extensions()}>
+                <div class="properties-buttons flex flex-row flex-wrap mt-2">
+                    {#each extensionModulesAreaMapEditor as extensionModuleAreaMapEditor, index (`extensionModulesAreaMapEditor-${index}`)}
+                        {#each Object.entries(extensionModuleAreaMapEditor) as [subtype, areaProperty] (`extensionModuleAreaMapEditor-${subtype}`)}
+                            {#if areaProperty.shouldDisplayButton(properties)}
+                                <AddPropertyButtonWrapper
+                                    property="extensionModule"
+                                    subProperty={subtype}
+                                    on:click={() => {
+                                        onAddProperty("extensionModule", subtype);
+                                    }}
+                                />
+                            {/if}
+                        {/each}
                     {/each}
-                {/each}
-                {#if !hasJitsiRoomProperty}
+                </div>
+            </CollapsibleSection>
+        {/if}
+        <CollapsibleSection title={$LL.mapEditor.properties.categories.contentMedia()}>
+            <div class="properties-buttons flex flex-row flex-wrap mt-2">
+                {#if !hasplayAudioProperty}
                     <AddPropertyButtonWrapper
-                        property="jitsiRoomProperty"
+                        property="playAudio"
                         on:click={() => {
-                            onAddProperty("jitsiRoomProperty");
+                            onAddProperty("playAudio");
                         }}
-                        disabled={hasLivekitRoomProperty || hasSpeakerMegaphoneProperty || hasListenerMegaphoneProperty}
                     />
                 {/if}
-            </div>
-        {/if}
-        <div class="properties-buttons flex flex-row flex-wrap mt-2">
             <AddPropertyButtonWrapper
                 property="openWebsite"
                 on:click={() => {
@@ -768,18 +780,19 @@
                     onAddProperty("openWebsite", "tldraw");
                 }}
             />
-        </div>
-        <div class="properties-buttons flex flex-row flex-wrap mt-2">
-            {#each connectionManager.applications as app, index (`my-own-app-${index}`)}
-                <AddPropertyButtonWrapper
-                    property="openWebsite"
-                    subProperty={app.name}
-                    on:click={() => {
-                        onAddSpecificProperty(app);
-                    }}
-                />
-            {/each}
-        </div>
+            </div>
+            <div class="properties-buttons flex flex-row flex-wrap mt-2">
+                {#each connectionManager.applications as app, index (`my-own-app-${index}`)}
+                    <AddPropertyButtonWrapper
+                        property="openWebsite"
+                        subProperty={app.name}
+                        on:click={() => {
+                            onAddSpecificProperty(app);
+                        }}
+                    />
+                {/each}
+            </div>
+        </CollapsibleSection>
 
         <Input
             id="objectName"

@@ -8,6 +8,7 @@ import type {
 import type { AreaPreview } from "../Phaser/Components/MapEditor/AreaPreview";
 import type { Entity } from "../Phaser/ECS/Entity";
 import type { EditorToolName } from "../Phaser/Game/MapEditor/MapEditorModeManager";
+import { localUserStore } from "../Connection/LocalUserStore";
 
 export const mapEditorVisibilityStore = writable<boolean>(true);
 
@@ -89,3 +90,27 @@ export type SelectableTag = string | undefined;
 export const selectCategoryStore = writable<SelectableTag>(undefined);
 
 export const mapEditorRestrictedPropertiesStore = writable<string[]>([]);
+
+const MAX_RECENT_ENTITIES = 8;
+
+function createMapEditorRecentEntitiesStore() {
+    const { subscribe, set, update } = writable<string[]>(localUserStore.getMapEditorRecentEntities());
+
+    return {
+        subscribe,
+        set: (value: string[]) => {
+            const trimmed = value.slice(0, MAX_RECENT_ENTITIES);
+            localUserStore.setMapEditorRecentEntities(trimmed);
+            set(trimmed);
+        },
+        add: (entityId: string) => {
+            update((current) => {
+                const next = [entityId, ...current.filter((id) => id !== entityId)].slice(0, MAX_RECENT_ENTITIES);
+                localUserStore.setMapEditorRecentEntities(next);
+                return next;
+            });
+        },
+    };
+}
+
+export const mapEditorRecentEntitiesStore = createMapEditorRecentEntitiesStore();
