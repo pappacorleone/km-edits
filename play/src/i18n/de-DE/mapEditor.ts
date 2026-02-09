@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "Papierkorb aktiviert",
         configureMyRoomActivated: "Mein Zimmer konfigurieren aktiviert",
     },
+    statusBar: {
+        undo: "Rückgängig",
+        redo: "Wiederherstellen",
+        saved: "Gespeichert",
+        saving: "Speichern...",
+        unsavedChanges: "Nicht gespeicherte Änderungen",
+    },
+    shortcutOverlay: {
+        title: "Tastaturkürzel",
+        closeHint: "Drücken Sie erneut ? zum Schließen",
+        sections: {
+            tools: "Werkzeuge",
+            editing: "Bearbeitung",
+            canvas: "Leinwand",
+        },
+        items: {
+            explore: "Raum erkunden",
+            areaEditor: "Flächeneditor",
+            entityEditor: "Entitätseditor",
+            wamSettings: "Raum konfigurieren",
+            trash: "Papierkorb",
+            closeEditor: "Karteneditor schließen",
+            undo: "Letzte Aktion rückgängig machen",
+            redo: "Letzte Aktion wiederherstellen",
+            delete: "Auswahl löschen",
+            copyDrag: "Beim Ziehen kopieren",
+            snapGrid: "Am Raster ausrichten",
+            zoom: "Vergrößern/Verkleinern",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Objekt gelöscht.",
+        areaDeleted: "Bereich gelöscht.",
+        undo: "Rückgängig",
+    },
     properties: {
+        categories: {
+            communication: "Kommunikation",
+            contentMedia: "Inhalte & Medien",
+            navigation: "Navigation",
+            behavior: "Verhalten",
+            extensions: "Erweiterungen",
+        },
         silent: {
             label: "Stumm",
             description: "Keine Gespräche im Inneren erlauben.",
@@ -353,9 +395,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "Suchen",
             backToSelectObject: "Zurück zur Objektauswahl",
+            recent: "Zuletzt verwendet",
         },
         trashTool: {
             delete: "Klicken Sie auf das Objekt, um es zu löschen!",
+            shortcutHint: "Tipp: Drücken Sie Entf oder Rücktaste, um die Auswahl zu entfernen.",
+        },
+        hints: {
+            placeObject: "Wählen Sie ein Objekt aus und klicken Sie auf die Karte, um es zu platzieren.",
+            snapToGrid: "Halten Sie die Umschalttaste gedrückt, um am Raster auszurichten.",
         },
         deleteButton: "Löschen",
         testInteractionButton: "Interaktion testen",

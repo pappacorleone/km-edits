@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "Editor de lixeira ativado",
         configureMyRoomActivated: "Configurar minha sala ativado",
     },
+    statusBar: {
+        undo: "Desfazer",
+        redo: "Refazer",
+        saved: "Salvo",
+        saving: "Salvando...",
+        unsavedChanges: "Alterações não salvas",
+    },
+    shortcutOverlay: {
+        title: "Atalhos de teclado",
+        closeHint: "Pressione ? novamente para fechar",
+        sections: {
+            tools: "Ferramentas",
+            editing: "Edição",
+            canvas: "Tela",
+        },
+        items: {
+            explore: "Explorar a sala",
+            areaEditor: "Editor de áreas",
+            entityEditor: "Editor de entidades",
+            wamSettings: "Configurar minha sala",
+            trash: "Lixeira",
+            closeEditor: "Fechar editor de mapa",
+            undo: "Desfazer última ação",
+            redo: "Refazer última ação",
+            delete: "Excluir seleção",
+            copyDrag: "Copiar ao arrastar",
+            snapGrid: "Encaixar na grade",
+            zoom: "Aumentar/Diminuir zoom",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Objeto excluído.",
+        areaDeleted: "Área excluída.",
+        undo: "Desfazer",
+    },
     properties: {
+        categories: {
+            communication: "Comunicação",
+            contentMedia: "Conteúdo e mídia",
+            navigation: "Navegação",
+            behavior: "Comportamento",
+            extensions: "Extensões",
+        },
         silent: {
             label: "Silencioso",
             description: "Não permitir conversas dentro.",
@@ -353,9 +395,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "Pesquisar",
             backToSelectObject: "Voltar para selecionar objeto",
+            recent: "Recentes",
         },
         trashTool: {
             delete: "Clique no objeto para excluí-lo!",
+            shortcutHint: "Dica: pressione Delete ou Backspace para remover a seleção.",
+        },
+        hints: {
+            placeObject: "Selecione um objeto e clique no mapa para posicioná-lo.",
+            snapToGrid: "Mantenha Shift pressionado para encaixar na grade.",
         },
         deleteButton: "Excluir",
         testInteractionButton: "Testar Interação",

@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "Zbórk wužiwaś",
         configureMyRoomActivated: "Mój rum wobźěłaś",
     },
+    statusBar: {
+        undo: "Anulěrowaś",
+        redo: "Wótnowiś",
+        saved: "Składowane",
+        saving: "Składujo...",
+        unsavedChanges: "Njeskładowane změny",
+    },
+    shortcutOverlay: {
+        title: "Tastowe skrotconki",
+        closeHint: "Tłocćo hyšći raz ? za zacynjenje",
+        sections: {
+            tools: "Rědy",
+            editing: "Wobźěłowanje",
+            canvas: "Płatno",
+        },
+        items: {
+            explore: "Rum pśepytaś",
+            areaEditor: "Editor wobcerkow",
+            entityEditor: "Editor entitow",
+            wamSettings: "Mój rum konfigurěrowaś",
+            trash: "Papjerkowy kóš",
+            closeEditor: "Kórtowy editor zacyniś",
+            undo: "Slědnu akciju anulěrowaś",
+            redo: "Slědnu akciju wótnowiś",
+            delete: "Wuběrk lašowaś",
+            copyDrag: "Pśi śěganju kopěrowaś",
+            snapGrid: "Na kśidno pśiměriś",
+            zoom: "Pówětšyś/Pomjeńšyś",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Objekt jo se lašował.",
+        areaDeleted: "Wobcerk jo se lašował.",
+        undo: "Anulěrowaś",
+    },
     properties: {
+        categories: {
+            communication: "Komunikacija",
+            contentMedia: "Wopśimjeśe a medije",
+            navigation: "Nawigacija",
+            behavior: "Zaźaržanje",
+            extensions: "Rozšyrjenja",
+        },
         silent: {
             label: "Śichy wobceŕk",
             description: "Rozgrona nutśi zakazaś.",
@@ -351,9 +393,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "Pytowaś",
             backToSelectObject: "Slědk k wuzwólonemu objektoju",
+            recent: "Njedawne",
         },
         trashTool: {
             delete: "Klikniśo na objekt, aby jen wulašowali!",
+            shortcutHint: "Tip: Tłocćo Lašowańsku abo Slědkstupańsku tastu, aby wuběrk wótwónoźeł.",
+        },
+        hints: {
+            placeObject: "Wubjeŕśo objekt a klikniśo na kórtu, aby jen stajił.",
+            snapToGrid: "Źaržćo Umsch za pśiměrjenje na kśidno.",
         },
         deleteButton: "Wulašowaś",
         testInteractionButton: "Interakciju testowaś",

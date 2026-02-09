@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "Papjernik wužiwać",
         configureMyRoomActivated: "Mój rum wobdźěłać",
     },
+    statusBar: {
+        undo: "Cofnyć",
+        redo: "Wróćić",
+        saved: "Składowane",
+        saving: "Składuje so...",
+        unsavedChanges: "Njeskładowane změny",
+    },
+    shortcutOverlay: {
+        title: "Tastowe skrótšenki",
+        closeHint: "Tłóčće hišće raz ? za začinjenje",
+        sections: {
+            tools: "Nastroje",
+            editing: "Wobdźěłanje",
+            canvas: "Płatno",
+        },
+        items: {
+            explore: "Rum přepytać",
+            areaEditor: "Editor wobłukow",
+            entityEditor: "Editor entitow",
+            wamSettings: "Mój rum konfigurować",
+            trash: "Papjerjowy kóš",
+            closeEditor: "Kartowy editor začinić",
+            undo: "Poslednju akciju cofnyć",
+            redo: "Poslednju akciju wróćić",
+            delete: "Wuběr zhašeć",
+            copyDrag: "Při ćahanju kopěrować",
+            snapGrid: "Na lěsycu přiměrić",
+            zoom: "Powjetšić/Pomjeńšić",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Objekt bu zhašeny.",
+        areaDeleted: "Wobłuk bu zhašeny.",
+        undo: "Cofnyć",
+    },
     properties: {
+        categories: {
+            communication: "Komunikacija",
+            contentMedia: "Wobsah a medije",
+            navigation: "Nawigacija",
+            behavior: "Zadźerženje",
+            extensions: "Rozšěrjenja",
+        },
         silent: {
             label: "němy",
             description: "Žane rozmołwy w nutřkownym dowolić.",
@@ -350,9 +392,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "slědźić",
             backToSelectObject: "Wróćo k wubrance",
+            recent: "Najnowše",
         },
         trashTool: {
             delete: "Klikńće na objekt, zo byšće jón wotstronił!",
+            shortcutHint: "Tip: Tłóčće Lösch- abo Rückschritttastu, zo byšće wuběr wotstronili.",
+        },
+        hints: {
+            placeObject: "Wubjerće objekt a klikńće na kartu, zo byšće jón stajili.",
+            snapToGrid: "Dźeržće Umsch za přiměrjenje na lěsycu.",
         },
         deleteButton: "wotstronić",
         testInteractionButton: "Interakciju testować",

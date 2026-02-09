@@ -45,7 +45,7 @@ export FRONT_URL=http://play.workadventure.localhost
 export VITE_URL=http://front.workadventure.localhost
 export PUSHER_URL=http://play.workadventure.localhost
 export PUBLIC_MAP_STORAGE_URL=http://map-storage.workadventure.localhost
-export INTERNAL_MAP_STORAGE_URL=http://localhost:3000
+export INTERNAL_MAP_STORAGE_URL=http://localhost:3005
 export ALLOWED_CORS_ORIGIN=http://play.workadventure.localhost
 export UPLOADER_URL=http://uploader.workadventure.localhost
 export ICON_URL=http://icon.workadventure.localhost
@@ -63,13 +63,14 @@ export ENABLE_MAP_EDITOR=true
 export ENABLE_CHAT=true
 export ENABLE_CHAT_UPLOAD=true
 export STORE_VARIABLES_FOR_LOCAL_MAPS=true
-export START_ROOM_URL=/_/global/maps.workadventure.localhost/starter/map.json
+export START_ROOM_URL=/~/maps/starter/map.wam
 
 # Kill any existing processes on our ports
 echo ""
 echo "Cleaning up any existing processes..."
 pkill -f "tsx.*back/src" 2>/dev/null || true
 pkill -f "tsx.*play/src" 2>/dev/null || true
+pkill -f "tsx.*map-storage/src" 2>/dev/null || true
 pkill -f "vite" 2>/dev/null || true
 sleep 1
 
@@ -93,6 +94,23 @@ for i in {1..30}; do
     sleep 1
 done
 
+# Start map-storage service (needed for editable WAM maps)
+echo ""
+echo "Starting map-storage service..."
+cd map-storage
+PORT=3005 npm run back:start:dev > /tmp/workadventure-logs/map-storage.log 2>&1 &
+MAP_STORAGE_PID=$!
+cd ..
+
+echo "Waiting for map-storage to initialize (gRPC on port 50053)..."
+for i in {1..30}; do
+    if nc -z localhost 50053 2>/dev/null; then
+        echo "Map-storage service is ready!"
+        break
+    fi
+    sleep 1
+done
+
 # Start play service (includes Pusher + Vite frontend)
 echo ""
 echo "Starting play service..."
@@ -110,11 +128,13 @@ echo "  Services Started!"
 echo "============================================="
 echo ""
 echo "Process IDs:"
-echo "  Back: $BACK_PID"
-echo "  Play: $PLAY_PID"
+echo "  Back:        $BACK_PID"
+echo "  Map-storage: $MAP_STORAGE_PID"
+echo "  Play:        $PLAY_PID"
 echo ""
 echo "View Logs:"
 echo "  tail -f /tmp/workadventure-logs/back.log"
+echo "  tail -f /tmp/workadventure-logs/map-storage.log"
 echo "  tail -f /tmp/workadventure-logs/play.log"
 echo ""
 echo "Access URLs:"
@@ -130,11 +150,12 @@ echo ""
 
 # Save PIDs for later
 echo "$BACK_PID" > /tmp/workadventure-logs/back.pid
+echo "$MAP_STORAGE_PID" > /tmp/workadventure-logs/map-storage.pid
 echo "$PLAY_PID" > /tmp/workadventure-logs/play.pid
 
 # Keep script running and show combined logs (unless running in background)
 if [ "$BACKGROUND" = false ]; then
     echo "Streaming logs (Ctrl+C to stop viewing, services keep running)..."
     echo ""
-    tail -f /tmp/workadventure-logs/back.log /tmp/workadventure-logs/play.log 2>/dev/null || wait
+    tail -f /tmp/workadventure-logs/back.log /tmp/workadventure-logs/map-storage.log /tmp/workadventure-logs/play.log 2>/dev/null || wait
 fi

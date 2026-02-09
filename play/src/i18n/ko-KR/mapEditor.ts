@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "휴지통 편집 모드로 전환되었습니다",
         configureMyRoomActivated: "내 방 설정 모드로 전환되었습니다",
     },
+    statusBar: {
+        undo: "실행 취소",
+        redo: "다시 실행",
+        saved: "저장됨",
+        saving: "저장 중...",
+        unsavedChanges: "저장되지 않은 변경 사항",
+    },
+    shortcutOverlay: {
+        title: "키보드 단축키",
+        closeHint: "다시 ?를 눌러 닫기",
+        sections: {
+            tools: "도구",
+            editing: "편집",
+            canvas: "캔버스",
+        },
+        items: {
+            explore: "방 탐색",
+            areaEditor: "영역 편집기",
+            entityEditor: "엔티티 편집기",
+            wamSettings: "내 방 설정",
+            trash: "휴지통",
+            closeEditor: "맵 편집기 닫기",
+            undo: "마지막 작업 취소",
+            redo: "마지막 작업 다시 실행",
+            delete: "선택 삭제",
+            copyDrag: "드래그하며 복사",
+            snapGrid: "그리드에 맞추기",
+            zoom: "확대/축소",
+        },
+    },
+    undoToast: {
+        entityDeleted: "객체가 삭제되었습니다.",
+        areaDeleted: "영역이 삭제되었습니다.",
+        undo: "실행 취소",
+    },
     properties: {
+        categories: {
+            communication: "커뮤니케이션",
+            contentMedia: "콘텐츠 및 미디어",
+            navigation: "내비게이션",
+            behavior: "동작",
+            extensions: "확장",
+        },
         silent: {
             label: "조용한 영역",
             description: "이 영역 안에서는 대화를 할 수 없습니다.",
@@ -349,9 +391,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "검색",
             backToSelectObject: "오브젝트 선택 화면으로 돌아가기",
+            recent: "최근",
         },
         trashTool: {
             delete: "삭제하려는 오브젝트를 클릭하세요!",
+            shortcutHint: "팁: Delete 또는 Backspace를 눌러 선택을 삭제하세요.",
+        },
+        hints: {
+            placeObject: "객체를 선택한 후 맵을 클릭하여 배치하세요.",
+            snapToGrid: "Shift를 누른 채로 그리드에 맞출 수 있습니다.",
         },
         deleteButton: "삭제",
         testInteractionButton: "상호작용 테스트",

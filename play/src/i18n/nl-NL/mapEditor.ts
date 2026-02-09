@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "Prullenbak editor geactiveerd",
         configureMyRoomActivated: "Configureer mijn kamer geactiveerd",
     },
+    statusBar: {
+        undo: "Ongedaan maken",
+        redo: "Opnieuw",
+        saved: "Opgeslagen",
+        saving: "Opslaan...",
+        unsavedChanges: "Niet-opgeslagen wijzigingen",
+    },
+    shortcutOverlay: {
+        title: "Sneltoetsen",
+        closeHint: "Druk nogmaals op ? om te sluiten",
+        sections: {
+            tools: "Gereedschap",
+            editing: "Bewerken",
+            canvas: "Canvas",
+        },
+        items: {
+            explore: "Verken de ruimte",
+            areaEditor: "Gebiedseditor",
+            entityEditor: "Entiteitseditor",
+            wamSettings: "Mijn ruimte configureren",
+            trash: "Prullenbak",
+            closeEditor: "Kaarteditor sluiten",
+            undo: "Laatste actie ongedaan maken",
+            redo: "Laatste actie opnieuw uitvoeren",
+            delete: "Selectie verwijderen",
+            copyDrag: "Kopiëren tijdens slepen",
+            snapGrid: "Uitlijnen op raster",
+            zoom: "In-/uitzoomen",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Object verwijderd.",
+        areaDeleted: "Gebied verwijderd.",
+        undo: "Ongedaan maken",
+    },
     properties: {
+        categories: {
+            communication: "Communicatie",
+            contentMedia: "Inhoud & Media",
+            navigation: "Navigatie",
+            behavior: "Gedrag",
+            extensions: "Extensies",
+        },
         silent: {
             label: "Stil",
             description: "Sta geen gesprekken binnen toe.",
@@ -353,9 +395,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "Zoeken",
             backToSelectObject: "Terug om object te selecteren",
+            recent: "Recent",
         },
         trashTool: {
             delete: "Klik op het object om het te verwijderen!",
+            shortcutHint: "Tip: druk op Delete of Backspace om de selectie te verwijderen.",
+        },
+        hints: {
+            placeObject: "Selecteer een object en klik op de kaart om het te plaatsen.",
+            snapToGrid: "Houd Shift ingedrukt om uit te lijnen op het raster.",
         },
         deleteButton: "Verwijderen",
         testInteractionButton: "Test Interactie",

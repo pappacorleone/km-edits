@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "Corbeille activée",
         configureMyRoomActivated: "Configuration de la salle activée",
     },
+    statusBar: {
+        undo: "Annuler",
+        redo: "Rétablir",
+        saved: "Enregistré",
+        saving: "Enregistrement...",
+        unsavedChanges: "Modifications non enregistrées",
+    },
+    shortcutOverlay: {
+        title: "Raccourcis clavier",
+        closeHint: "Appuyez à nouveau sur ? pour fermer",
+        sections: {
+            tools: "Outils",
+            editing: "Édition",
+            canvas: "Canevas",
+        },
+        items: {
+            explore: "Explorer la salle",
+            areaEditor: "Éditeur de zone",
+            entityEditor: "Éditeur d'entités",
+            wamSettings: "Configurer le salon",
+            trash: "Corbeille",
+            closeEditor: "Fermer l'éditeur de carte",
+            undo: "Annuler la dernière action",
+            redo: "Rétablir la dernière action",
+            delete: "Supprimer la sélection",
+            copyDrag: "Copier en glissant",
+            snapGrid: "Aligner sur la grille",
+            zoom: "Zoomer/Dézoomer",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Objet supprimé.",
+        areaDeleted: "Zone supprimée.",
+        undo: "Annuler",
+    },
     properties: {
+        categories: {
+            communication: "Communication",
+            contentMedia: "Contenu & Médias",
+            navigation: "Navigation",
+            behavior: "Comportement",
+            extensions: "Extensions",
+        },
         silent: {
             label: "Silent",
             description: "Ne permet pas les conversations à l'intérieur.",
@@ -353,9 +395,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "Rechercher",
             backToSelectObject: "Retour à la sélection d'objet",
+            recent: "Récents",
         },
         trashTool: {
             delete: "Supprimer un item en cliquant dessus !",
+            shortcutHint: "Astuce : appuyez sur Suppr ou Retour arrière pour supprimer la sélection.",
+        },
+        hints: {
+            placeObject: "Sélectionnez un objet, puis cliquez sur la carte pour le placer.",
+            snapToGrid: "Maintenez Maj pour aligner sur la grille.",
         },
         deleteButton: "Supprimer",
         testInteractionButton: "Tester interaction",

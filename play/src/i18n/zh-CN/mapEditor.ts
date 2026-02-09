@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "垃圾桶编辑器已激活",
         configureMyRoomActivated: "配置我的房间已激活",
     },
+    statusBar: {
+        undo: "撤销",
+        redo: "重做",
+        saved: "已保存",
+        saving: "保存中...",
+        unsavedChanges: "未保存的更改",
+    },
+    shortcutOverlay: {
+        title: "键盘快捷键",
+        closeHint: "再次按 ? 关闭",
+        sections: {
+            tools: "工具",
+            editing: "编辑",
+            canvas: "画布",
+        },
+        items: {
+            explore: "探索房间",
+            areaEditor: "区域编辑器",
+            entityEditor: "实体编辑器",
+            wamSettings: "配置我的房间",
+            trash: "垃圾箱",
+            closeEditor: "关闭地图编辑器",
+            undo: "撤销上一步操作",
+            redo: "重做上一步操作",
+            delete: "删除选中",
+            copyDrag: "拖动时复制",
+            snapGrid: "对齐网格",
+            zoom: "放大/缩小",
+        },
+    },
+    undoToast: {
+        entityDeleted: "对象已删除。",
+        areaDeleted: "区域已删除。",
+        undo: "撤销",
+    },
     properties: {
+        categories: {
+            communication: "通信",
+            contentMedia: "内容与媒体",
+            navigation: "导航",
+            behavior: "行为",
+            extensions: "扩展",
+        },
         silent: {
             label: "静音",
             description: "不允许在此区域内进行对话。",
@@ -345,9 +387,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "搜索",
             backToSelectObject: "返回选择对象",
+            recent: "最近",
         },
         trashTool: {
             delete: "点击对象以删除它！",
+            shortcutHint: "提示：按 Delete 或 Backspace 键删除选中内容。",
+        },
+        hints: {
+            placeObject: "选择一个对象，然后点击地图放置。",
+            snapToGrid: "按住 Shift 键对齐网格。",
         },
         deleteButton: "删除",
         testInteractionButton: "测试交互",

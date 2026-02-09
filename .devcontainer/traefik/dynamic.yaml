@@ -84,7 +84,7 @@ http:
     map-storage:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:3000"
+          - url: "http://host.docker.internal:3005"
     back:
       loadBalancer:
         servers:

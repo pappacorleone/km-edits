@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "Corbeille activée",
         configureMyRoomActivated: "Configuration de la salle activée",
     },
+    statusBar: {
+        undo: "Deshacer",
+        redo: "Rehacer",
+        saved: "Guardado",
+        saving: "Guardando...",
+        unsavedChanges: "Cambios sin guardar",
+    },
+    shortcutOverlay: {
+        title: "Atajos de teclado",
+        closeHint: "Presiona ? de nuevo para cerrar",
+        sections: {
+            tools: "Herramientas",
+            editing: "Edición",
+            canvas: "Lienzo",
+        },
+        items: {
+            explore: "Explorar la sala",
+            areaEditor: "Editor de áreas",
+            entityEditor: "Editor de entidades",
+            wamSettings: "Configurar mi sala",
+            trash: "Papelera",
+            closeEditor: "Cerrar editor de mapa",
+            undo: "Deshacer última acción",
+            redo: "Rehacer última acción",
+            delete: "Eliminar selección",
+            copyDrag: "Copiar al arrastrar",
+            snapGrid: "Ajustar a la cuadrícula",
+            zoom: "Acercar/Alejar",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Objeto eliminado.",
+        areaDeleted: "Área eliminada.",
+        undo: "Deshacer",
+    },
     properties: {
+        categories: {
+            communication: "Comunicación",
+            contentMedia: "Contenido y medios",
+            navigation: "Navegación",
+            behavior: "Comportamiento",
+            extensions: "Extensiones",
+        },
         seeAttendees: "See attendees",
         silent: {
             label: "Silent",
@@ -353,9 +395,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "Rechercher",
             backToSelectObject: "Retour à la sélection d'objet",
+            recent: "Recientes",
         },
         trashTool: {
             delete: "Supprimer un item en cliquant dessus !",
+            shortcutHint: "Consejo: presiona Supr o Retroceso para eliminar la selección.",
+        },
+        hints: {
+            placeObject: "Selecciona un objeto y haz clic en el mapa para colocarlo.",
+            snapToGrid: "Mantén Shift para ajustar a la cuadrícula.",
         },
         deleteButton: "Supprimer",
         testInteractionButton: "Tester interaction",

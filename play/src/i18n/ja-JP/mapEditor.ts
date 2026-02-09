@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "ごみ箱エディターの起動",
         configureMyRoomActivated: "マイルームの設定",
     },
+    statusBar: {
+        undo: "元に戻す",
+        redo: "やり直す",
+        saved: "保存済み",
+        saving: "保存中...",
+        unsavedChanges: "未保存の変更",
+    },
+    shortcutOverlay: {
+        title: "キーボードショートカット",
+        closeHint: "もう一度 ? を押して閉じる",
+        sections: {
+            tools: "ツール",
+            editing: "編集",
+            canvas: "キャンバス",
+        },
+        items: {
+            explore: "部屋を探索",
+            areaEditor: "エリアエディタ",
+            entityEditor: "エンティティエディタ",
+            wamSettings: "部屋を設定",
+            trash: "ゴミ箱",
+            closeEditor: "マップエディタを閉じる",
+            undo: "最後の操作を元に戻す",
+            redo: "最後の操作をやり直す",
+            delete: "選択を削除",
+            copyDrag: "ドラッグ中にコピー",
+            snapGrid: "グリッドにスナップ",
+            zoom: "ズームイン/アウト",
+        },
+    },
+    undoToast: {
+        entityDeleted: "オブジェクトが削除されました。",
+        areaDeleted: "エリアが削除されました。",
+        undo: "元に戻す",
+    },
     properties: {
+        categories: {
+            communication: "コミュニケーション",
+            contentMedia: "コンテンツとメディア",
+            navigation: "ナビゲーション",
+            behavior: "動作",
+            extensions: "拡張機能",
+        },
         silent: {
             label: "静かに",
             description: "室内での会話は禁止です。",
@@ -350,9 +392,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "検索",
             backToSelectObject: "オブジェクトの選択に戻る",
+            recent: "最近",
         },
         trashTool: {
             delete: "オブジェクトをクリックして削除します。",
+            shortcutHint: "ヒント：DeleteまたはBackspaceキーで選択を削除できます。",
+        },
+        hints: {
+            placeObject: "オブジェクトを選択し、マップ上をクリックして配置します。",
+            snapToGrid: "Shiftキーを押しながらグリッドにスナップします。",
         },
         deleteButton: "削除",
         testInteractionButton: "相互作用のテスト",

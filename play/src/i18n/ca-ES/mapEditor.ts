@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "Paperera activada",
         configureMyRoomActivated: "Configuració de la sala activada",
     },
+    statusBar: {
+        undo: "Desfer",
+        redo: "Refer",
+        saved: "Desat",
+        saving: "Desant...",
+        unsavedChanges: "Canvis sense desar",
+    },
+    shortcutOverlay: {
+        title: "Dreceres de teclat",
+        closeHint: "Premeu ? de nou per tancar",
+        sections: {
+            tools: "Eines",
+            editing: "Edició",
+            canvas: "Llenç",
+        },
+        items: {
+            explore: "Explorar la sala",
+            areaEditor: "Editor d'àrees",
+            entityEditor: "Editor d'entitats",
+            wamSettings: "Configurar la meva sala",
+            trash: "Paperera",
+            closeEditor: "Tancar editor de mapa",
+            undo: "Desfer última acció",
+            redo: "Refer última acció",
+            delete: "Eliminar selecció",
+            copyDrag: "Copiar arrossegant",
+            snapGrid: "Ajustar a la graella",
+            zoom: "Ampliar/Reduir",
+        },
+    },
+    undoToast: {
+        entityDeleted: "Objecte eliminat.",
+        areaDeleted: "Àrea eliminada.",
+        undo: "Desfer",
+    },
     properties: {
+        categories: {
+            communication: "Comunicació",
+            contentMedia: "Contingut i mitjans",
+            navigation: "Navegació",
+            behavior: "Comportament",
+            extensions: "Extensions",
+        },
         silent: {
             label: "Silenciós",
             description: "No permet converses a l'interior.",
@@ -351,9 +393,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "Cercar",
             backToSelectObject: "Tornar a seleccionar objecte",
+            recent: "Recents",
         },
         trashTool: {
             delete: "Feu clic a l'objecte per eliminar-lo!",
+            shortcutHint: "Consell: premeu Supr o Retrocés per eliminar la selecció.",
+        },
+        hints: {
+            placeObject: "Seleccioneu un objecte i feu clic al mapa per col·locar-lo.",
+            snapToGrid: "Mantingueu Maj per ajustar a la graella.",
         },
         deleteButton: "Eliminar",
         testInteractionButton: "Provar interacció",

@@ -152,6 +152,7 @@ if (fs.existsSync("dist-ui")) {
     });
 }
 
-app.listen(3000, () => {
-    console.info(`[${new Date().toISOString()}] Application is running on port 3000`);
+const httpPort = parseInt(process.env.PORT || "3000", 10);
+app.listen(httpPort, () => {
+    console.info(`[${new Date().toISOString()}] Application is running on port ${httpPort}`);
 });

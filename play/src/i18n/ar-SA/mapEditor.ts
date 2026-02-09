@@ -21,7 +21,49 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         trashEditorActivated: "تم تفعيل سلة المهملات", // Papierkorb aktiviert
         configureMyRoomActivated: "تم تفعيل تكوين غرفتي", // Mein Zimmer konfigurieren aktiviert
     },
+    statusBar: {
+        undo: "تراجع",
+        redo: "إعادة",
+        saved: "تم الحفظ",
+        saving: "جارٍ الحفظ...",
+        unsavedChanges: "تغييرات غير محفوظة",
+    },
+    shortcutOverlay: {
+        title: "اختصارات لوحة المفاتيح",
+        closeHint: "اضغط ? مرة أخرى للإغلاق",
+        sections: {
+            tools: "الأدوات",
+            editing: "التحرير",
+            canvas: "اللوحة",
+        },
+        items: {
+            explore: "استكشاف الغرفة",
+            areaEditor: "محرر المنطقة",
+            entityEditor: "محرر الكيانات",
+            wamSettings: "تهيئة غرفتي",
+            trash: "سلة المحذوفات",
+            closeEditor: "إغلاق محرر الخريطة",
+            undo: "التراجع عن آخر إجراء",
+            redo: "إعادة آخر إجراء",
+            delete: "حذف التحديد",
+            copyDrag: "النسخ أثناء السحب",
+            snapGrid: "محاذاة إلى الشبكة",
+            zoom: "تكبير/تصغير",
+        },
+    },
+    undoToast: {
+        entityDeleted: "تم حذف الكائن.",
+        areaDeleted: "تم حذف المنطقة.",
+        undo: "تراجع",
+    },
     properties: {
+        categories: {
+            communication: "الاتصالات",
+            contentMedia: "المحتوى والوسائط",
+            navigation: "التنقل",
+            behavior: "السلوك",
+            extensions: "الإضافات",
+        },
         silent: {
             label: "صامت",
             description: "عدم السماح بإجراء محادثات داخل المنطقة.",
@@ -346,9 +388,15 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
         itemPicker: {
             searchPlaceholder: "بحث", // Search
             backToSelectObject: "العودة لاختيار الكائن", // Back to select object
+            recent: "الأخيرة",
         },
         trashTool: {
             delete: "انقر على الكائن لحذفه!", // Click on the object to delete it!
+            shortcutHint: "نصيحة: اضغط Delete أو Backspace لحذف التحديد.",
+        },
+        hints: {
+            placeObject: "حدد كائنًا، ثم انقر على الخريطة لوضعه.",
+            snapToGrid: "اضغط مع الاستمرار على Shift للمحاذاة إلى الشبكة.",
         },
         deleteButton: "حذف", // Delete
         testInteractionButton: "اختبار التفاعل", // Test interaction
