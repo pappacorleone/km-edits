@@ -31,7 +31,7 @@ export class Area extends Phaser.GameObjects.Rectangle {
             collide ? 0xff0000 : overlap ? 0x0000ff : 0x000000,
             collide || overlap ? 0.1 : 0
         );
-        this.scene.add.existing(this).setVisible(false);
+        this.scene.add.existing(this).setVisible(false).setDepth(-1.5);
         this.scene.physics.add.existing(this, true);
         if (collide) {
             this.applyCollider();

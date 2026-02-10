@@ -1,0 +1,43 @@
+# GCP-specific Helm values for WorkAdventure
+# Use with: helm upgrade --install -f values-gcp.yaml -f values-gcp-override.yaml
+#
+# Required overrides (create values-gcp-override.yaml with your values):
+#   domainName: your-domain.com
+#   mapstorage.secretEnv.AUTHENTICATION_PASSWORD: <password>
+#   play.secretEnv.ROOM_API_SECRET_KEY: <key>
+#   secretKey: <jwt-secret>
+
+singleDomain: true
+
+ingress:
+  enabled: true
+  className: "nginx"
+  tls: false  # Set true and configure secretName when using cert-manager
+  # secretName: "workadventure-tls"  # Uncomment with cert-manager
+  # annotationsRoot:
+  #   cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  # annotationsPath:
+  #   cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  annotationsPath:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+
+# Use public Docker Hub images (default)
+play:
+  image:
+    repository: thecodingmachine/workadventure-play
+back:
+  image:
+    repository: thecodingmachine/workadventure-back
+mapstorage:
+  image:
+    repository: thecodingmachine/workadventure-map-storage
+  persistence:
+    enabled: true
+    storageClass: "standard"  # GKE default
+    storageSize: 10Gi
+uploader:
+  image:
+    repository: thecodingmachine/workadventure-uploader
+
+# Redis is included as Helm dependency (auth disabled by default for simplicity)

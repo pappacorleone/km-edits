@@ -163,6 +163,7 @@ export class GameMapFrontWrapper {
                             .setSize(layer.width, layer.height)
                     );
                 }
+                depth++;
             }
             if (layer.type === "objectgroup" && layer.name === "floorLayer") {
                 depth = DEPTH_OVERLAY_INDEX;

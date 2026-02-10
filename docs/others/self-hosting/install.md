@@ -129,6 +129,12 @@ notes before upgrading.
 
 Click here to see the [Helm chart install guide](../../../contrib/helm/README.md).
 
+### Deploy to Google Cloud (GCP)
+
+A script is provided to deploy WorkAdventure to GKE using the `gcloud` CLI. It creates a GKE cluster, installs the NGINX Ingress Controller, and deploys the Helm chart.
+
+See the [GCP deployment guide](../../../contrib/gcp/README.md).
+
 ### Alternative installation methods
 
 For any question related to non-standard deployments, you can ask the community on the "server-sorcery" Discord
