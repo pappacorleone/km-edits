@@ -124,8 +124,8 @@ jobs:
 
           IMAGE_PREFIX="ghcr.io/${{ github.repository_owner }}/workadventure"
 
-          # Write override to point at GHCR images
-          cat > docker-compose.override.yaml << EOF
+          # Write override to point at GHCR images (needs sudo — dir is owned by root)
+          sudo tee docker-compose.override.yaml > /dev/null << EOF
           services:
             play:
               image: ${IMAGE_PREFIX}-play:master
@@ -136,9 +136,9 @@ jobs:
           EOF
 
           # Pull new images and restart
-          docker compose pull
-          docker compose up -d
-          docker image prune -f
+          sudo docker compose pull
+          sudo docker compose up -d
+          sudo docker image prune -f
 
           echo "Deploy complete at $(date)"
           DEPLOY_SCRIPT
