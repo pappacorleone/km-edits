@@ -112,7 +112,9 @@ npm run svelte-check  # Svelte type checking (play and map-storage)
 npm run typecheck     # TypeScript type checking
 ```
 
-Pre-commit hooks (Husky) run lint-staged (ESLint + Prettier) across all services, `i18n:check` for play, and `export-json-schema` for libs/map-editor.
+Prettier config: 120 char print width, 4-space tabs, Svelte plugin enabled. Each service has its own `.prettierrc.json`.
+
+Pre-commit hooks (Husky) run lint-staged (ESLint + Prettier) across all services, `i18n:check` for play, and `export-json-schema` for libs/map-editor. After first clone, run `npm install` at the root to install Husky hooks.
 
 ### Key ESLint Rules (enforced project-wide)
 - `no-explicit-any`: **error** — avoid `any` types
@@ -135,13 +137,24 @@ npm run i18n:check        # Validation (runs in pre-commit)
 
 Any user-facing message added to the code should be translated in all supported languages.
 
-## CI Pipeline
+## CI/CD Pipeline
 
+### CI — Continuous Integration
 GitHub Actions (`.github/workflows/continuous_integration.yml`) runs per-service jobs in parallel on Node.js 22. Each service job:
 1. Installs protoc (arduino/setup-protoc@v3) and builds messages first
 2. Runs typecheck, lint, tests, prettier-check
 3. Play additionally runs: i18n:check, svelte-check, build, build-iframe-api
 4. libs/map-editor validates that `export-json-schema` output matches committed files (git diff check)
+
+### CD — Deploy to GCP VM
+GitHub Actions (`.github/workflows/deploy-gcp.yml`) triggers on push to `master`:
+1. Builds Docker images for play, back, map-storage in parallel on GitHub runners
+2. Pushes to GHCR (`ghcr.io/pappacorleone/workadventure-{play,back,map-storage}:master`)
+3. SSHes into GCP VM via service account, writes `docker-compose.override.yaml`, pulls and restarts
+
+**GCP VM**: `workadventure` (e2-small, us-east1-b, project: sundaistack, IP: 35.185.4.222)
+**GitHub Secret**: `GCP_SA_KEY` — service account key for `github-deployer@sundaistack.iam.gserviceaccount.com`
+**Deployment scripts**: `contrib/gcp/deploy-e2-small.sh` (create VM), `contrib/gcp/vm-startup.sh` (bootstrap)
 
 ## Key Entry Points
 - `play/src/server.ts` — Frontend + Pusher server

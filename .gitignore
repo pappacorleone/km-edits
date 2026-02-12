@@ -27,3 +27,7 @@ synapse/media_store/*
 .vscode/settings.json
 play/src/i18n/ko-KR/*.backup
 vite.config.mts.timestamp-*
+
+# Google Cloud SDK (local install)
+google-cloud-sdk/
+google-cloud-cli-*.tar.gz

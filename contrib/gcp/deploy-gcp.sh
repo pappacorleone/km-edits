@@ -14,6 +14,7 @@
 #   -r, --region     GCP region (default: us-central1)
 #   -n, --name       Cluster name (default: workadventure)
 #   -d, --domain     Domain name for WorkAdventure (required)
+#   -m, --machine-type  GKE node machine type (default: e2-standard-4)
 #   -v, --version    WorkAdventure image version (default: master)
 #   -h, --help       Show this help
 
@@ -24,6 +25,7 @@ PROJECT=""
 REGION="us-central1"
 CLUSTER_NAME="workadventure"
 DOMAIN=""
+MACHINE_TYPE="e2-standard-4"
 VERSION="master"
 NAMESPACE="workadventure"
 
@@ -44,6 +46,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -d|--domain)
       DOMAIN="$2"
+      shift 2
+      ;;
+    -m|--machine-type)
+      MACHINE_TYPE="$2"
       shift 2
       ;;
     -v|--version)
@@ -79,6 +85,7 @@ echo "Project:  $PROJECT"
 echo "Region:   $REGION"
 echo "Cluster:  $CLUSTER_NAME"
 echo "Domain:   $DOMAIN"
+echo "Machine:  $MACHINE_TYPE"
 echo "Version:  $VERSION"
 echo ""
 
@@ -104,7 +111,7 @@ else
   gcloud container clusters create "$CLUSTER_NAME" \
     --region="$REGION" \
     --num-nodes=2 \
-    --machine-type=e2-standard-4 \
+    --machine-type="$MACHINE_TYPE" \
     --enable-autoscaling \
     --min-nodes=1 \
     --max-nodes=5 \
