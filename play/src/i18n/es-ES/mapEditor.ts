@@ -179,7 +179,6 @@ const mapEditor: DeepPartial<Translation["mapEditor"]> = {
             waitingSpeaker: "Esperando al orador 🎤✨",
             actionButtonLabel: "Unirse a la audiencia",
         },
-        seeAttendees: "Ver asistentes",
         start: {
             label: "Zona de inicio",
             description: "Donde pueden empezar las personas en el mapa.",
